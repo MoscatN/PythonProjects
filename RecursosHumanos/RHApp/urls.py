@@ -14,5 +14,7 @@ urlpatterns = [
     path('empleados/', views.empleados),
     path('candidatos/', views.candidatos),
 
-    path('create_idioma/', views.createIdioma, name="create_idioma")
+    path('create_idioma/', views.createIdioma, name="create_idioma"),
+    path('update_idioma/<str:pk>/', views.updateIdioma, name="update_idioma"),
+    path('delete_idioma/<str:pk>/', views.deleteIdioma, name="delete_idioma"),
 ]

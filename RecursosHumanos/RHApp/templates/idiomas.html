@@ -30,8 +30,8 @@
                         <p>Inactivo</p>
                         {% endif %}
                         </td>
-                        <td><a href="" class="btn btn-warning">Edit</a></td>
-                        <td><a href="" class="btn btn-danger">Delete</a></td>
+                        <td><a href="{% url 'update_idioma' i.id %}" class="btn btn-warning">Edit</a></td>
+                        <td><a href="{% url 'delete_idioma' i.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
                 {% endfor %}
