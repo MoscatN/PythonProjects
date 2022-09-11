@@ -13,4 +13,6 @@ urlpatterns = [
     path('explaboral/', views.experienciaLaboral),
     path('empleados/', views.empleados),
     path('candidatos/', views.candidatos),
+
+    path('create_idioma/', views.createIdioma, name="create_idioma")
 ]

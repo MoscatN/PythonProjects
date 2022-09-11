@@ -5,11 +5,9 @@ from django.db import models
 
 class Idioma(models.Model):
     """RHApp manejados por el candidato"""
-    CHOICES = [("activo", "ACTIVO"),
-               ("inactivo", "INACTIVO")]
 
-    Idioma = models.TextField(max_length=200)
-    Activo = models.BooleanField(choices=CHOICES)
+    Idioma = models.CharField(max_length=200)
+    Activo = models.BooleanField()
 
     def __str__(self):
         """"""
