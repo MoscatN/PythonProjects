@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<br>
+  <form action="" method="POST">
+    <!-- CSRF Token is a secret, unique and unpredictable value a server-side application generates in order to protect vulnerable resources.    -->
+      {% csrf_token %}
+
+    <div class="row">
+        <div class="col-md-3">
+                          {{ form }}
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <input type="submit" name="Submit" class="btn btn-success">
+            <a class="btn btn-warning" href="/explaboral">Go Back</a>
+
+        </div>
+
+    </div>
+
+  </form>
+
+{% endblock %}

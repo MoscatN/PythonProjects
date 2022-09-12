@@ -24,13 +24,13 @@
                 </tr>
                 {% for ca in Capacitaciones %}
                     <tr>
-                        <td>{{i.Descripcion}}</td>
-                        <td>{{i.Nivel}}</td>
-                        <td>{{i.Fecha_Desde}}</td>
-                        <td>{{i.Fecha_Hasta}}</td>
-                        <td>{{i.Institucion}}</td>
-                        <td><a href="{% url 'update_capacitaciones' i.id %}" class="btn btn-warning">Edit</a></td>
-                        <td><a href="{% url 'delete_capacitaciones' i.id %}" class="btn btn-danger">Delete</a></td>
+                        <td>{{ca.Descripcion}}</td>
+                        <td>{{ca.Nivel}}</td>
+                        <td>{{ca.Fecha_Desde}}</td>
+                        <td>{{ca.Fecha_Hasta}}</td>
+                        <td>{{ca.Institucion}}</td>
+                        <td><a href="{% url 'update_capacitaciones' ca.id %}" class="btn btn-warning">Edit</a></td>
+                        <td><a href="{% url 'delete_capacitaciones' ca.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
                 {% endfor %}

@@ -27,7 +27,7 @@ class Capacitaciones(models.Model):
 
 class Competencia(models.Model):
     """Competencias del Candidato"""
-    Descripcion = models.TextField(max_length=200)
+    Descripcion = models.CharField(max_length=200)
     Activo = models.BooleanField()
 
     def __str__(self):
@@ -71,7 +71,7 @@ class ExperienciaLaboral(models.Model):
 
 class Candidatos(models.Model):
     """"""
-    Cedula = models.TextField(
+    Cedula = models.CharField(
         max_length=13,
 
         validators=[
@@ -81,12 +81,12 @@ class Candidatos(models.Model):
             )
         ]
     )
-    Nombre = models.TextField(max_length=25)
+    Nombre = models.CharField(max_length=25)
     PuestoAspira = models.ForeignKey(
         Puesto,
         on_delete=models.CASCADE,
         )
-    Departamento = models.TextField(max_length=50)
+    Departamento = models.CharField(max_length=50)
     SalarioAspirado = models.IntegerField
     CompetenciasPrincipales = models.ForeignKey(
         Competencia,
@@ -100,7 +100,7 @@ class Candidatos(models.Model):
         ExperienciaLaboral,
         on_delete=models.CASCADE
     )
-    RecomendadoPor = models.TextField(max_length=50)
+    RecomendadoPor = models.CharField(max_length=50)
 
     def __str__(self):
         return self.Nombre

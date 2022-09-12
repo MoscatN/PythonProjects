@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'main.html' %}
 
-</body>
-</html>
+{% block content %}
+
+<br>
+
+<a class="btn btn-info btn-sm btn-block" href="{% url 'create_competencia' %}">Create</a>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Competencias</h5>
+        </div>
+        <hr>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th>Descripcion</th>
+                    <th>Estado</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                {% for ce in Competencia %}
+                    <tr>
+                        <td>{{ce.Descripcion}}</td>
+                        <td>
+                            {% if ce.Activo == True %}
+                            <p>Activo</p>
+                        {% else %}
+                        <p>Inactivo</p>
+                        {% endif %}
+                        </td>
+                        <td><a href="{% url 'update_competencia' ce.id %}" class="btn btn-warning">Edit</a></td>
+                        <td><a href="{% url 'delete_competencia' ce.id %}" class="btn btn-danger">Delete</a></td>
+
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}

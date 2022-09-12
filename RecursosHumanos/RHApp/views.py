@@ -39,6 +39,7 @@ def empleados(request):
 def candidatos(request):
     return render(request, 'candidatos.html')
 
+#Idiomas (Modelo)
 
 def createIdioma(request):
     form = IdiomaForm()
@@ -76,6 +77,8 @@ def deleteIdioma(request, pk):
     context = {'item': idioma}
     return render(request, 'delete.html', context)
 
+#Capacitaciones (Modelo)
+
 def createCapacitaciones(request):
     form = CapacitacionesForm()
 
@@ -112,6 +115,7 @@ def deleteCapacitaciones(request, pk):
     context = {'item': capacitaciones}
     return render(request, 'delete.html', context)
 
+# Competencias (Modelo)
 
 def createCompetencias(request):
     form = CompetenciaForm()
@@ -145,6 +149,149 @@ def deleteCompetencia(request, pk):
     competencia = Competencia.objects.get(id=pk)
     if request.method == "POST":
         competencia.delete()
-        return redirect('/idiomas')
+        return redirect('/competencia')
     context = {'item': competencia}
+    return render(request, 'delete.html', context)
+
+#Puesto (Model)
+
+def createPuesto(request):
+    form = PuestoForm()
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = PuestoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/competencia')
+
+    context = {'form': form}
+    return render(request, 'puestoForm.html', context)
+
+def updatePuesto(request, pk):
+    puesto = Puesto.objects.get(id=pk)
+    form = PuestoForm(instance=puesto)
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = CompetenciaForm(request.POST, instance=competencia())
+        if form.is_valid():
+            form.save()
+            return redirect('/puesto')
+
+    context = {'form': form}
+    return render(request, 'puestoForm.html', context)
+
+def deletePuesto(request, pk):
+    puesto = Puesto.objects.get(id=pk)
+    if request.method == "POST":
+        puesto.delete()
+        return redirect('/puesto')
+    context = {'item': puesto}
+    return render(request, 'delete.html', context)
+
+# Experiencia Laboral
+def createExpLaboral(request):
+    form = ExpLabForm()
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = ExpLabForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/explaboral')
+
+    context = {'form': form}
+    return render(request, 'expLabForm.html', context)
+
+def updateExpLaboral(request, pk):
+    experienciaLaboral = ExperienciaLaboral.objects.get(id=pk)
+    form = ExpLabForm(instance=experienciaLaboral)
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = ExpLabForm(request.POST, instance=experienciaLaboral)
+        if form.is_valid():
+            form.save()
+            return redirect('/explaboral')
+
+    context = {'form': form}
+    return render(request, 'expLabForm.html', context)
+
+def deleteExpLaboral(request, pk):
+    experienciaLaboral = ExperienciaLaboral.objects.get(id=pk)
+    if request.method == "POST":
+        experienciaLaboral.delete()
+        return redirect('/explaboral')
+    context = {'item': experienciaLaboral}
+    return render(request, 'delete.html', context)
+
+def createCandidatos(request):
+    form = CandidatosForm()
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = CandidatosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/candidatos')
+
+    context = {'form': form}
+    return render(request, 'candidatosForm.html', context)
+
+def updateCandidatos(request, pk):
+    candidatos = Candidatos.objects.get(id=pk)
+    form = CandidatosForm(instance=candidatos)
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = CandidatosForm(request.POST, instance=candidatos)
+        if form.is_valid():
+            form.save()
+            return redirect('/candidatos')
+
+    context = {'form': form}
+    return render(request, 'candidatosForm.html', context)
+
+def deleteCandidatos(request, pk):
+    candidatos = Candidatos.objects.get(id=pk)
+    if request.method == "POST":
+        candidatos.delete()
+        return redirect('/candidatos')
+    context = {'item': candidatos}
+    return render(request, 'delete.html', context)
+
+def createEmpleados(request):
+    form = EmpleadosForm()
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = EmpleadosForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/empleados')
+
+    context = {'form': form}
+    return render(request, 'empleadosForm.html', context)
+
+def updateEmpleados(request, pk):
+    empleados = Empleados.objects.get(id=pk)
+    form = EmpleadosForm(instance=empleados)
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = EmpleadosForm(request.POST, instance=empleados)
+        if form.is_valid():
+            form.save()
+            return redirect('/empleados')
+
+    context = {'form': form}
+    return render(request, 'empleadosForm.html', context)
+
+def deleteEmpleados(request, pk):
+    empleados = Empleados.objects.get(id=pk)
+    if request.method == "POST":
+        empleados.delete()
+        return redirect('/empleados')
+    context = {'item': empleados}
     return render(request, 'delete.html', context)

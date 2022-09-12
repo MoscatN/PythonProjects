@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'main.html' %}
 
-</body>
-</html>
+{% block content %}
+
+<br>
+
+<a class="btn btn-info btn-sm btn-block" href="{% url 'create_candidatos' %}">Create</a>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Competencias</h5>
+        </div>
+        <hr>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th>Cedula</th>
+                    <th>Nombre</th>
+                    <th>Puesto Aspirado</th>
+                    <th>Departamento</th>
+                    <th>Salario Aspirado</th>
+                    <th>Competencias Principales</th>
+                    <th>Capacitaciones Principales</th>
+                    <th>Experiencia Laboral</th>
+                    <th>Recomendado Por</th>
+                </tr>
+                {% for cnd in Candidatos %}
+                    <tr>
+                        <td>{{cnd.Cedula}}</td>
+                        <td>{{cnd.Nombre}}</td>
+                        <td>{{cnd.PuestoAspira}}</td>
+                        <td>{{cnd.Departamento}}</td>
+                        <td>{{cnd.SalarioAspirado}}</td>
+                        <td>{{cnd.CompeteciasPrincipales}}</td>
+                        <td>{{cnd.CapacitacionesPrincipales}}</td>
+                        <td>{{cnd.Exp_Laboral}}</td>
+                        <td>{{cnd.RecomendadoPor}}</td>
+
+                        <td><a href="{% url 'update_candidatos' cnd.id %}" class="btn btn-warning">Edit</a></td>
+                        <td><a href="{% url 'delete_candidatos' cnd.id %}" class="btn btn-danger">Delete</a></td>
+
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}

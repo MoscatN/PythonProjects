@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'main.html' %}
 
-</body>
-</html>
+{% block content %}
+
+<br>
+
+<a class="btn btn-info btn-sm btn-block" href="{% url 'create_empleados' %}">Create</a>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Competencias</h5>
+        </div>
+        <hr>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th>Cedula</th>
+                    <th>Nombre</th>
+                    <th>Fecha de Ingreso</th>
+                    <th>Departamento</th>
+                    <th>Puesto</th>
+                    <th>Salario Mensual</th>
+                    <th>Estado</th>
+                </tr>
+                {% for emp in Empleados %}
+                    <tr>
+                        <td>{{emp.Cedula}}</td>
+                        <td>{{emp.Nombre}}</td>
+                        <td>{{emp.Fecha_Ingreso}}</td>
+                        <td>{{emp.Departamento}}</td>
+                        <td>{{emp.Puesto}}</td>
+                        <td>{{emp.SalarioMensual}}</td>
+                        <td>
+                            {% if emp.Activo == True %}
+                            <p>Activo</p>
+                        {% else %}
+                        <p>Inactivo</p>
+                        {% endif %}
+                        </td>
+                        <td><a href="{% url 'update_empleados' emp.id %}" class="btn btn-warning">Edit</a></td>
+                        <td><a href="{% url 'delete_empleados' emp.id %}" class="btn btn-danger">Delete</a></td>
+
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}
