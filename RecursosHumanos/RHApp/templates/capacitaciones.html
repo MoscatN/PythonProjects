@@ -1,10 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'main.html' %}
 
-</body>
-</html>
+{% block content %}
+
+<br>
+
+<a class="btn btn-info btn-sm btn-block" href="{% url 'create_capacitaciones' %}">Create</a>
+<br>
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Capacitaciones</h5>
+        </div>
+        <hr>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th>Descripcion</th>
+                    <th>Nivel</th>
+                    <th>Cursado Desde</th>
+                    <th>Cursado Hasta</th>
+                    <th>Institucion</th>
+                    <th></th>
+                </tr>
+                {% for ca in Capacitaciones %}
+                    <tr>
+                        <td>{{i.Descripcion}}</td>
+                        <td>{{i.Nivel}}</td>
+                        <td>{{i.Fecha_Desde}}</td>
+                        <td>{{i.Fecha_Hasta}}</td>
+                        <td>{{i.Institucion}}</td>
+                        <td><a href="{% url 'update_capacitaciones' i.id %}" class="btn btn-warning">Edit</a></td>
+                        <td><a href="{% url 'delete_capacitaciones' i.id %}" class="btn btn-danger">Delete</a></td>
+
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content%}

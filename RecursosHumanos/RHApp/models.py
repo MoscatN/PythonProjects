@@ -16,11 +16,11 @@ class Idioma(models.Model):
 class Capacitaciones(models.Model):
     """"""
 
-    Descripcion = models.TextField(max_length=200)
+    Descripcion = models.CharField(max_length=200)
     Nivel = models.CharField(max_length= 15)
     Fecha_Desde = models.DateField(auto_now_add= False, null=True)
     Fecha_Hasta = models.DateField(auto_now_add= False, null=True)
-    Institucion = models.TextField(max_length=55, null=True)
+    Institucion = models.CharField(max_length=55, null=True)
 
     def __str__(self):
         return self.Descripcion

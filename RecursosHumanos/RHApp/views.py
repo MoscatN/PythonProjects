@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from .models import Idioma
 from django.http import HttpResponse
 from .models import *
-from .forms import IdiomaForm
+from .forms import *
 
 
 def home(request):
@@ -16,6 +16,7 @@ def idiomas(request):
 
 
 def capacitaciones(request):
+    capacitaciones = Capacitaciones.objects.all()
     return render(request, 'capacitaciones.html')
 
 
@@ -73,4 +74,77 @@ def deleteIdioma(request, pk):
         idioma.delete()
         return redirect('/idiomas')
     context = {'item': idioma}
+    return render(request, 'delete.html', context)
+
+def createCapacitaciones(request):
+    form = CapacitacionesForm()
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = CapacitacionesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/capacitaciones')
+
+    context = {'form': form}
+    return render(request, 'capacitacionesForm.html', context)
+
+
+def updateCapacitaciones(request, pk):
+    capacitaciones = Capacitaciones.objects.get(id=pk)
+    form = CapacitacionesForm(instance=capacitaciones)
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = CapacitacionesForm(request.POST, instance=capacitaciones())
+        if form.is_valid():
+            form.save()
+            return redirect('/capacitaciones')
+
+    context = {'form': form}
+    return render(request, 'capacitacionesForm.html', context)
+
+def deleteCapacitaciones(request, pk):
+    capacitaciones = Capacitaciones.objects.get(id=pk)
+    if request.method == "POST":
+        capacitaciones.delete()
+        return redirect('/idiomas')
+    context = {'item': capacitaciones}
+    return render(request, 'delete.html', context)
+
+
+def createCompetencias(request):
+    form = CompetenciaForm()
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = CompetenciaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/competencia')
+
+    context = {'form': form}
+    return render(request, 'competenciaForm.html', context)
+
+
+def updateCompetencia(request, pk):
+    competencia = Competencia.objects.get(id=pk)
+    form = CompetenciaForm(instance=capacitaciones)
+
+    if request.method == 'POST':
+        # print('Printing POST: ', request.POST)
+        form = CompetenciaForm(request.POST, instance=competencia())
+        if form.is_valid():
+            form.save()
+            return redirect('/competencia')
+
+    context = {'form': form}
+    return render(request, 'competenciaForm.html', context)
+
+def deleteCompetencia(request, pk):
+    competencia = Competencia.objects.get(id=pk)
+    if request.method == "POST":
+        competencia.delete()
+        return redirect('/idiomas')
+    context = {'item': competencia}
     return render(request, 'delete.html', context)

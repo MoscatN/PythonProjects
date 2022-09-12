@@ -17,4 +17,8 @@ urlpatterns = [
     path('create_idioma/', views.createIdioma, name="create_idioma"),
     path('update_idioma/<str:pk>/', views.updateIdioma, name="update_idioma"),
     path('delete_idioma/<str:pk>/', views.deleteIdioma, name="delete_idioma"),
+
+    path('create_capacitaciones/', views.createCapacitaciones, name="create_capacitaciones"),
+    path('update_capacitaciones/<str:pk>/', views.updateCapacitaciones, name="update_capacitaciones"),
+    path('delete_capacitaciones/<str:pk>/', views.deleteCapacitaciones, name="delete_capacitaciones"),
 ]
