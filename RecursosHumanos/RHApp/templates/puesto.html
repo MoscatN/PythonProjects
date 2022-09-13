@@ -4,12 +4,12 @@
 
 <br>
 
-<a class="btn btn-info btn-sm btn-block" href="{% url 'create_capacitaciones' %}">Create</a>
+<a class="btn btn-info btn-sm btn-block" href="{% url 'create_puesto' %}">Create</a>
 <br>
 <div class="row">
     <div class="col-md">
         <div class="card card-body">
-            <h5>Capacitaciones</h5>
+            <h5>Puesto</h5>
         </div>
         <hr>
         <div class="card card-body">
@@ -17,26 +17,27 @@
                 <tr>
                     <th>Puesto</th>
                     <th>Riesgo</th>
-                    <th>SalarioMinimo</th>
-                    <th>Cursado Hasta</th>
-                    <th>Institucion</th>
+                    <th>Salario Minimo</th>
+                    <th>Salario Maximo</th>
+                    <th>Estado</th>
+                    <th></th>
                     <th></th>
                 </tr>
-                {% for p in Puesto %}
+                {% for p in puesto %}
                     <tr>
                         <td>{{p.Puesto}}</td>
                         <td>{{p.Riesgo}}</td>
                         <td>{{p.SalarioMinimo}}</td>
                         <td>{{p.SalarioMaximo}}</td>
                         <td>
-                            {% if cnd.Activo == True %}
+                            {% if p.Activo == True %}
                             <p>Activo</p>
                         {% else %}
                         <p>Inactivo</p>
                         {% endif %}
                         </td>
-                        <td><a href="{% url 'update_capacitaciones' p.id %}" class="btn btn-warning">Edit</a></td>
-                        <td><a href="{% url 'delete_capacitaciones' p.id %}" class="btn btn-danger">Delete</a></td>
+                        <td><a href="{% url 'update_puesto' p.id %}" class="btn btn-warning">Edit</a></td>
+                        <td><a href="{% url 'delete_puesto' p.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
                 {% endfor %}

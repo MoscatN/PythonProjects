@@ -23,14 +23,14 @@ def exportPDF(request):
     for emp in emps:
         lines.append(emp.Cedula)
         lines.append(emp.Nombre)
-        lines.append(emp.Fecha_Ingresa)
+        lines.append(emp.Fecha_Ingreso)
         lines.append(emp.Departamento)
         lines.append(emp.Puesto)
         lines.append(emp.SalarioMensual)
         lines.append(emp.Activo)
         lines.append(" ")
 
-    for emp in lines:
+    for line in lines:
         textob.textLine(line)
 
     c.drawText(textob)
@@ -53,23 +53,24 @@ def capacitaciones(request):
 
 
 def competencia(request):
-    return render(request, 'competencia.html')
-
+    competencia = Competencia.objects.all()
+    return render(request, 'competencia.html', {'competencia': competencia})
 
 def puesto(request):
-    return render(request, 'puesto.html')
-
+    puesto = Puesto.objects.all()
+    return render(request, 'puesto.html', {'puesto': puesto})
 
 def experienciaLaboral(request):
-    return render(request, 'explaboral.html')
-
+    experienciaLaboral = ExperienciaLaboral.objects.all()
+    return render(request, 'explaboral.html', {'experienciaLaboral': experienciaLaboral})
 
 def empleados(request):
-    return render(request, 'empleados.html')
-
+    empleados = Empleados.objects.all()
+    return render(request, 'empleados.html', {'empleados': empleados})
 
 def candidatos(request):
-    return render(request, 'candidatos.html')
+    candidatos = Candidatos.objetcs.all()
+    return render(request, 'candidatos.html', {'candidatos': candidatos})
 
 #Idiomas (Modelo)
 
@@ -194,7 +195,7 @@ def createPuesto(request):
         form = PuestoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/competencia')
+            return redirect('/puesto')
 
     context = {'form': form}
     return render(request, 'puestoForm.html', context)
@@ -205,7 +206,7 @@ def updatePuesto(request, pk):
 
     if request.method == 'POST':
         # print('Printing POST: ', request.POST)
-        form = CompetenciaForm(request.POST, instance=competencia())
+        form = PuestoForm(request.POST, instance=puesto)
         if form.is_valid():
             form.save()
             return redirect('/puesto')
@@ -325,4 +326,4 @@ def deleteEmpleados(request, pk):
         empleados.delete()
         return redirect('/empleados')
     context = {'item': empleados}
-    return render(request, 'delete.html', context)
+    return render(request, 'deleteEmpleados.html', context)

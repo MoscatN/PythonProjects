@@ -15,12 +15,12 @@ class Idioma(models.Model):
 
 class Capacitaciones(models.Model):
     """"""
-    GRADO = 'GR'
-    POSTGRADO = 'PG'
-    MAESTRIA = 'MS'
-    DOCTORADO = 'PhD'
-    TECNICO = 'TEC'
-    GESTION = 'GST'
+    GRADO = 'Grado'
+    POSTGRADO = 'Post-Grado'
+    MAESTRIA = 'Maestria'
+    DOCTORADO = 'Doctorado'
+    TECNICO = 'Tecnico'
+    GESTION = 'Gestion'
     Nivel = [
        (GRADO, 'Grado'),
        (POSTGRADO, 'Post-Grado'),
@@ -35,9 +35,9 @@ class Capacitaciones(models.Model):
         max_length=15,
         choices=Nivel,
         default=GRADO)
-    Fecha_Desde = models.DateField(auto_now_add= False)
-    Fecha_Hasta = models.DateField(auto_now_add= False)
-    Institucion = models.CharField(max_length=55)
+    Fecha_Desde = models.DateField(auto_now_add= False, null=True)
+    Fecha_Hasta = models.DateField(auto_now_add= False, null=True)
+    Institucion = models.CharField(max_length=55, null=True)
 
     def __str__(self):
         return self.Descripcion
@@ -53,14 +53,19 @@ class Competencia(models.Model):
 
 class Puesto(models.Model):
     """"""
-    # class Riesgo(models.TextChoices):
-    #     Alto = 'H', _('Alto')
-    #     Medio = 'M', _('Medio')
-    #     Bajo = 'L', _('Bajo')
+    ALTO = 'Alto'
+    MEDIO = 'Medio'
+    BAJO = 'Bajo'
 
-    Puesto = models.TextField(max_length=50)
+    Riesgo = [
+        (ALTO, 'Alto'),
+        (MEDIO, 'Medio'),
+        (BAJO, 'Bajo')
+    ]
 
-    Riesgo = models.CharField(max_length=20)
+    Puesto = models.CharField(max_length=50)
+
+    Riesgo = models.CharField(max_length=20, choices=Riesgo)
 
     SalarioMinimo = models.IntegerField(null=True)
 
@@ -140,11 +145,12 @@ class Empleados(models.Model):
 
     Departamento = models.CharField(max_length=30)
 
+    SalarioMensual = models.IntegerField(max_length=44, null=True)
+
     Puesto = models.ForeignKey(
         Puesto,
         on_delete= models.CASCADE
     )
-    SalarioMensual = models.IntegerField
 
     Activo = models.BooleanField()
 
