@@ -15,12 +15,29 @@ class Idioma(models.Model):
 
 class Capacitaciones(models.Model):
     """"""
+    GRADO = 'GR'
+    POSTGRADO = 'PG'
+    MAESTRIA = 'MS'
+    DOCTORADO = 'PhD'
+    TECNICO = 'TEC'
+    GESTION = 'GST'
+    Nivel = [
+       (GRADO, 'Grado'),
+       (POSTGRADO, 'Post-Grado'),
+       (MAESTRIA, 'Maestria'),
+       (DOCTORADO, 'Doctorado'),
+       (TECNICO, 'Tecnico'),
+       (GESTION, 'Gestion'),
+     ]
 
     Descripcion = models.CharField(max_length=200)
-    Nivel = models.CharField(max_length= 15)
-    Fecha_Desde = models.DateField(auto_now_add= False, null=True)
-    Fecha_Hasta = models.DateField(auto_now_add= False, null=True)
-    Institucion = models.CharField(max_length=55, null=True)
+    Nivel = models.CharField(
+        max_length=15,
+        choices=Nivel,
+        default=GRADO)
+    Fecha_Desde = models.DateField(auto_now_add= False)
+    Fecha_Hasta = models.DateField(auto_now_add= False)
+    Institucion = models.CharField(max_length=55)
 
     def __str__(self):
         return self.Descripcion
@@ -107,7 +124,7 @@ class Candidatos(models.Model):
 
 class Empleados(models.Model):
 
-    Cedula = models.TextField(
+    Cedula = models.CharField(
         max_length=13,
         validators=[
             RegexValidator(
@@ -117,11 +134,11 @@ class Empleados(models.Model):
         ]
     )
 
-    Nombre = models.TextField(max_length=25)
+    Nombre = models.CharField(max_length=25)
 
     Fecha_Ingreso = models.DateField(auto_now_add=False, null=True)
 
-    Departamento = models.TextField(max_length=30)
+    Departamento = models.CharField(max_length=30)
 
     Puesto = models.ForeignKey(
         Puesto,

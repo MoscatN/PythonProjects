@@ -1,10 +1,50 @@
 from django.db import models
 from django.shortcuts import render, redirect
 from .models import Idioma
-from django.http import HttpResponse
+from django.http import FileResponse
 from .models import *
 from .forms import *
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
 
+# PDF Generator
+# def exportPDF(request):
+#     buf = io.BytesIO()
+#     c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+#     textob = c.beginText()
+#     textob.setTextOrigin(inch, inch)
+#     textob.setFont("Helvetica", 14)
+#
+#     # lines = [
+#     #     "Line 1",
+#     #     "Line 2",
+#     #     "Line 3",
+#     # ]
+#
+#     emps = Empleados.objects.all()
+#
+#     lines = []
+#
+#     for emp in emps:
+#         lines.append(emp.Cedula)
+#         lines.append(emp.Nombre)
+#         lines.append(emp.Fecha_Ingresa)
+#         lines.append(emp.Departamento)
+#         lines.append(emp.Puesto)
+#         lines.append(emp.SalarioMensual)
+#         lines.append(emp.Activo)
+#         lines.append(" ")
+#
+#     for emp in lines:
+#         textob.textLine(line)
+#
+#     c.drawText(textob)
+#     c.showPage()
+#     c.save()
+#     buf.seek(0)
+#     return FileResponse(buf, as_attachment=True, filename='empleados.pdf')
 
 def home(request):
     return render(request, 'dashboard.html')
