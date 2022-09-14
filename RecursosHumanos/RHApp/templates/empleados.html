@@ -13,7 +13,7 @@
         </div>
         <hr>
         <div class="card card-body">
-            <table class="table">
+            <table id="table_id" class="display">
                 <tr>
                     <th>Cedula</th>
                     <th>Nombre</th>
@@ -22,6 +22,8 @@
                     <th>Puesto</th>
                     <th>Salario Mensual</th>
                     <th>Estado</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 {% for emp in empleados %}
                     <tr>
@@ -47,5 +49,7 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
 {% endblock content%}

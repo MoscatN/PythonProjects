@@ -1,5 +1,7 @@
-from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 from django.db import models
+from .ValidacionCedula import validarCedula
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 
@@ -67,9 +69,9 @@ class Puesto(models.Model):
 
     Riesgo = models.CharField(max_length=20, choices=Riesgo)
 
-    SalarioMinimo = models.IntegerField(null=True)
+    SalarioMinimo = models.IntegerField(null=True, validators=[MinValueValidator(0)])
 
-    SalarioMaximo = models.IntegerField(null=True)
+    SalarioMaximo = models.IntegerField(null=True, validators=[MinValueValidator(0)])
 
     Activo = models.BooleanField()
 
@@ -78,38 +80,29 @@ class Puesto(models.Model):
 
 class ExperienciaLaboral(models.Model):
 
-    Empresa = models.TextField(max_length=35)
+    Empresa = models.CharField(max_length=35)
 
-    PuestoOcupado = models.TextField(max_length=45)
+    PuestoOcupado = models.CharField(max_length=45)
 
     Fecha_Desde = models.DateField(auto_now_add=False, null=True)
 
     Fecha_Hasta = models.DateField(auto_now_add=False, null=True)
 
-    Salario = models.IntegerField
+    Salario = models.IntegerField(validators=[MinValueValidator(0)])
 
     def __str__(self):
         return self.PuestoOcupado
 
 class Candidatos(models.Model):
     """"""
-    Cedula = models.CharField(
-        max_length=13,
-
-        validators=[
-            RegexValidator(
-                regex='^\d{3}-\d{7}-\d{1}$',
-                message='El formato de Cedula debe ser XXX-XXXXXXX-X (Solo numerico)'
-            )
-        ]
-    )
+    Cedula = models.CharField(max_length=13)
     Nombre = models.CharField(max_length=25)
     PuestoAspira = models.ForeignKey(
         Puesto,
         on_delete=models.CASCADE,
         )
     Departamento = models.CharField(max_length=50)
-    SalarioAspirado = models.IntegerField
+    SalarioAspirado = models.IntegerField(validators=[MinValueValidator(0)])
     CompetenciasPrincipales = models.ForeignKey(
         Competencia,
         on_delete=models.CASCADE
@@ -127,17 +120,15 @@ class Candidatos(models.Model):
     def __str__(self):
         return self.Nombre
 
+    def clean(self):
+        if validarCedula(self.Cedula) == False:
+            raise ValidationError(
+                {'Cedula': "La cedula ingresada es incorrecta"}
+            )
+
 class Empleados(models.Model):
 
-    Cedula = models.CharField(
-        max_length=13,
-        validators=[
-            RegexValidator(
-                regex='^\d{3}-\d{7}-\d{1}$',
-                message='El formato de Cedula debe ser XXX-XXXXXXX-X (Solo numerico)'
-            )
-        ]
-    )
+    Cedula = models.CharField(max_length=13)
 
     Nombre = models.CharField(max_length=25)
 
@@ -145,7 +136,7 @@ class Empleados(models.Model):
 
     Departamento = models.CharField(max_length=30)
 
-    SalarioMensual = models.IntegerField(max_length=44, null=True)
+    SalarioMensual = models.IntegerField(validators=[MinValueValidator(0, message="El salario debe ser mayor que cero")], null=True)
 
     Puesto = models.ForeignKey(
         Puesto,
@@ -156,3 +147,9 @@ class Empleados(models.Model):
 
     def __str__(self):
         return self.Nombre
+
+    def clean(self):
+        if validarCedula(self.Cedula) == False:
+            raise ValidationError(
+                {'Cedula': "La cedula ingresada es incorrecta"}
+            )

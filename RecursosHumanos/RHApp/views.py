@@ -1,44 +1,24 @@
 from django.db import models
 from django.shortcuts import render, redirect
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
 from .models import *
 from .forms import *
-import io
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import letter
+import csv
 
-# PDF Generator
-def exportPDF(request):
-    buf = io.BytesIO()
-    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
-    textob = c.beginText()
-    textob.setTextOrigin(inch, inch)
-    textob.setFont("Helvetica", 14)
+# CSV Generator
+def exportCSV(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=Empleados.csv'
 
-    emps = Empleados.objects.all()
+    writer = csv.writer(response)
+    writer.writerow(['Cedula','Nombre','Fecha Ingreso', 'Departamento', 'Salario Mensual', 'Puesto', 'Estado'])
 
-    lines = []
+    empleados = Empleados.objects.all()
 
-    for emp in emps:
-        lines.append(emp.Cedula)
-        lines.append(emp.Nombre)
-        lines.append(emp.Fecha_Ingreso)
-        lines.append(emp.Departamento)
-        lines.append(emp.Puesto)
-        lines.append(emp.SalarioMensual)
-        lines.append(emp.Activo)
-        lines.append(" ")
+    for empleado in empleados:
+        writer.writerow([empleado.Cedula, empleado.Nombre, empleado.Fecha_Ingreso, empleado.Departamento, empleado.SalarioMensual, empleado.Puesto, empleado.Activo])
 
-    for line in lines:
-        textob.textLine(line)
-
-    c.drawText(textob)
-    c.showPage()
-    c.save()
-    buf.seek(0)
-    return FileResponse(buf, as_attachment=True, filename='empleados.pdf')
-
+    return response
 def home(request):
     return render(request, 'dashboard.html')
 
@@ -62,14 +42,14 @@ def puesto(request):
 
 def experienciaLaboral(request):
     experienciaLaboral = ExperienciaLaboral.objects.all()
-    return render(request, 'explaboral.html', {'experienciaLaboral': experienciaLaboral})
+    return render(request, 'expLaboral.html', {'experienciaLaboral': experienciaLaboral})
 
 def empleados(request):
     empleados = Empleados.objects.all()
     return render(request, 'empleados.html', {'empleados': empleados})
 
 def candidatos(request):
-    candidatos = Candidatos.objetcs.all()
+    candidatos = Candidatos.objects.all()
     return render(request, 'candidatos.html', {'candidatos': candidatos})
 
 #Idiomas (Modelo)

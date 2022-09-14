@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'main.html' %}
 
-</body>
-</html>
+{% block content %}
+
+<br>
+
+<a class="btn btn-info btn-sm btn-block" href="{% url 'create_explaboral' %}">Create</a>
+
+<div class="row">
+    <div class="col-md">
+        <div class="card card-body">
+            <h5>Experiencia Laboral</h5>
+        </div>
+        <hr>
+        <div class="card card-body">
+            <table class="table">
+                <tr>
+                    <th>Empresa</th>
+                    <th>Puesto Ocupado</th>
+                    <th>Fecha Desde</th>
+                    <th>Fecha Hasta</th>
+                    <th>Salario</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                {% for exp in experienciaLaboral %}
+                    <tr>
+                        <td>{{exp.Empresa}}</td>
+                        <td>{{exp.PuestoOcupado}}</td>
+                        <td>{{exp.Fecha_Desde}}</td>
+                        <td>{{exp.Fecha_Hasta}}</td>
+                        <td>{{exp.Salario}}</td>
+                        <td><a href="{% url 'update_explaboral' exp.id %}" class="btn btn-warning">Edit</a></td>
+                        <td><a href="{% url 'delete_explaboral' exp.id %}" class="btn btn-danger">Delete</a></td>
+
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
