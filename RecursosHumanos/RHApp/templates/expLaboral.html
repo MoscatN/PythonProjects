@@ -13,17 +13,20 @@
         </div>
         <hr>
         <div class="card card-body">
-            <table class="table">
-                <tr>
-                    <th>Empresa</th>
-                    <th>Puesto Ocupado</th>
-                    <th>Fecha Desde</th>
-                    <th>Fecha Hasta</th>
-                    <th>Salario</th>
-                    <th></th>
-                    <th></th>
-                </tr>
+            <table class="table" id="table_id">
+                <thead>
+                    <tr>
+                        <th>Empresa</th>
+                        <th>Puesto Ocupado</th>
+                        <th>Fecha Desde</th>
+                        <th>Fecha Hasta</th>
+                        <th>Salario</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
                 {% for exp in experienciaLaboral %}
+                <tbody>
                     <tr>
                         <td>{{exp.Empresa}}</td>
                         <td>{{exp.PuestoOcupado}}</td>
@@ -34,6 +37,7 @@
                         <td><a href="{% url 'delete_explaboral' exp.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
+                </tbody>
                 {% endfor %}
             </table>
         </div>

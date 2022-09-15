@@ -128,7 +128,7 @@ class Candidatos(models.Model):
 
 class Empleados(models.Model):
 
-    Cedula = models.CharField(max_length=13)
+    Cedula = models.CharField(max_length=13, unique=True)
 
     Nombre = models.CharField(max_length=25)
 

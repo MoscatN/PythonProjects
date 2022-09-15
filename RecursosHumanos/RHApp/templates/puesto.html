@@ -13,33 +13,37 @@
         </div>
         <hr>
         <div class="card card-body">
-            <table class="table">
-                <tr>
-                    <th>Puesto</th>
-                    <th>Riesgo</th>
-                    <th>Salario Minimo</th>
-                    <th>Salario Maximo</th>
-                    <th>Estado</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                {% for p in puesto %}
+            <table class="table" id="table_id">
+                <thead>
                     <tr>
-                        <td>{{p.Puesto}}</td>
-                        <td>{{p.Riesgo}}</td>
-                        <td>{{p.SalarioMinimo}}</td>
-                        <td>{{p.SalarioMaximo}}</td>
-                        <td>
-                            {% if p.Activo == True %}
-                            <p>Activo</p>
-                        {% else %}
-                        <p>Inactivo</p>
-                        {% endif %}
-                        </td>
-                        <td><a href="{% url 'update_puesto' p.id %}" class="btn btn-warning">Edit</a></td>
-                        <td><a href="{% url 'delete_puesto' p.id %}" class="btn btn-danger">Delete</a></td>
-
+                        <th>Puesto</th>
+                        <th>Riesgo</th>
+                        <th>Salario Minimo</th>
+                        <th>Salario Maximo</th>
+                        <th>Estado</th>
+                        <th></th>
+                        <th></th>
                     </tr>
+                </thead>
+                {% for p in puesto %}
+                <tbody>
+                        <tr>
+                            <td>{{p.Puesto}}</td>
+                            <td>{{p.Riesgo}}</td>
+                            <td>{{p.SalarioMinimo}}</td>
+                            <td>{{p.SalarioMaximo}}</td>
+                            <td>
+                                {% if p.Activo == True %}
+                                <p>Activo</p>
+                            {% else %}
+                            <p>Inactivo</p>
+                            {% endif %}
+                            </td>
+                            <td><a href="{% url 'update_puesto' p.id %}" class="btn btn-warning">Edit</a></td>
+                            <td><a href="{% url 'delete_puesto' p.id %}" class="btn btn-danger">Delete</a></td>
+
+                        </tr>
+                    </tbody>
                 {% endfor %}
             </table>
         </div>

@@ -14,18 +14,21 @@
         <hr>
         <div class="card card-body">
             <table class="table">
-                <tr>
-                    <th>Cedula</th>
-                    <th>Nombre</th>
-                    <th>Puesto Aspirado</th>
-                    <th>Departamento</th>
-                    <th>Salario Aspirado</th>
-                    <th>Competencias Principales</th>
-                    <th>Capacitaciones Principales</th>
-                    <th>Experiencia Laboral</th>
-                    <th>Recomendado Por</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Cedula</th>
+                        <th>Nombre</th>
+                        <th>Puesto Aspirado</th>
+                        <th>Departamento</th>
+                        <th>Salario Aspirado</th>
+                        <th>Competencias Principales</th>
+                        <th>Capacitaciones Principales</th>
+                        <th>Experiencia Laboral</th>
+                        <th>Recomendado Por</th>
+                    </tr>
+                </thead>
                 {% for cnd in Candidatos %}
+                <tbody>
                     <tr>
                         <td>{{cnd.Cedula}}</td>
                         <td>{{cnd.Nombre}}</td>
@@ -41,6 +44,7 @@
                         <td><a href="{% url 'delete_candidatos' cnd.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
+                </tbody>
                 {% endfor %}
             </table>
         </div>

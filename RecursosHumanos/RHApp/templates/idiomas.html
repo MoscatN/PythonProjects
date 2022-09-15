@@ -13,14 +13,17 @@
         </div>
         <hr>
         <div class="card card-body">
-            <table class="table">
-                <tr>
-                    <th>Idioma</th>
-                    <th>Estado</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
+            <table class="table" id="table_id">
+                <thead>
+                    <tr>
+                        <th>Idioma</th>
+                        <th>Estado</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
                 {% for i in idiomas %}
+                <tbody>
                     <tr>
                         <td>{{i.Idioma}}</td>
                         <td>
@@ -34,6 +37,7 @@
                         <td><a href="{% url 'delete_idioma' i.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
+                </tbody>
                 {% endfor %}
             </table>
         </div>

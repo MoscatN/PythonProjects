@@ -13,14 +13,17 @@
         </div>
         <hr>
         <div class="card card-body">
-            <table class="table">
-                <tr>
-                    <th>Descripcion</th>
-                    <th>Estado</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
+            <table class="table" id="table_id">
+                <thead>
+                    <tr>
+                        <th>Descripcion</th>
+                        <th>Estado</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
                 {% for ce in competencia %}
+                <tbody>
                     <tr>
                         <td>{{ce.Descripcion}}</td>
                         <td>
@@ -34,6 +37,7 @@
                         <td><a href="{% url 'delete_competencia' ce.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
+                </tbody>
                 {% endfor %}
             </table>
         </div>

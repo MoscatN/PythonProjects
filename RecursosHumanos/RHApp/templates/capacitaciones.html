@@ -3,26 +3,36 @@
 {% block content %}
 
 <br>
-
-<a class="btn btn-info btn-sm btn-block" href="{% url 'create_capacitaciones' %}">Create</a>
+<div class="row ">
+<!--    <div class="col-md-6 d-grid gap-2">-->
+<!--        <a class="btn btn-info btn-md btn-block" href="{% url 'create_capacitaciones' %}">Create</a>-->
+<!--    </div>-->
+</div>
 <br>
 <div class="row">
-    <div class="col-md">
+    <div class="col-md text-center">
         <div class="card card-body">
             <h5>Capacitaciones</h5>
+                <div class="col-md-6 d-grid gap-2 text-center">
+                    <a class="btn btn-info btn-md btn-block" href="{% url 'create_capacitaciones' %}">Create</a>
+                </div>
         </div>
         <hr>
         <div class="card card-body">
-            <table class="table">
-                <tr>
-                    <th>Descripcion</th>
-                    <th>Nivel</th>
-                    <th>Cursado Desde</th>
-                    <th>Cursado Hasta</th>
-                    <th>Institucion</th>
-                    <th></th>
-                </tr>
+            <table class="table" id="table_id">
+                <thead>
+                    <tr>
+                        <th>Descripcion</th>
+                        <th>Nivel</th>
+                        <th>Cursado Desde</th>
+                        <th>Cursado Hasta</th>
+                        <th>Institucion</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
                 {% for ca in capacitaciones %}
+                <tbody>
                     <tr>
                         <td>{{ca.Descripcion}}</td>
                         <td>{{ca.Nivel}}</td>
@@ -31,12 +41,12 @@
                         <td>{{ca.Institucion}}</td>
                         <td><a href="{% url 'update_capacitaciones' ca.id %}" class="btn btn-warning">Edit</a></td>
                         <td><a href="{% url 'delete_capacitaciones' ca.id %}" class="btn btn-danger">Delete</a></td>
-
                     </tr>
+                </tbody>
                 {% endfor %}
             </table>
         </div>
     </div>
 </div>
 
-{% endblock content%}
+{% endblock content %}
