@@ -31,8 +31,8 @@
                         <th></th>
                     </tr>
                 </thead>
-                {% for ca in capacitaciones %}
                 <tbody>
+                {% for ca in capacitaciones %}
                     <tr>
                         <td>{{ca.Descripcion}}</td>
                         <td>{{ca.Nivel}}</td>
@@ -42,8 +42,8 @@
                         <td><a href="{% url 'update_capacitaciones' ca.id %}" class="btn btn-warning">Edit</a></td>
                         <td><a href="{% url 'delete_capacitaciones' ca.id %}" class="btn btn-danger">Delete</a></td>
                     </tr>
-                </tbody>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>

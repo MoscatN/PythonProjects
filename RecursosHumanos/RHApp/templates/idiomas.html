@@ -22,8 +22,8 @@
                         <th>Delete</th>
                     </tr>
                 </thead>
-                {% for i in idiomas %}
                 <tbody>
+                {% for i in idiomas %}
                     <tr>
                         <td>{{i.Idioma}}</td>
                         <td>
@@ -37,8 +37,8 @@
                         <td><a href="{% url 'delete_idioma' i.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
-                </tbody>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>

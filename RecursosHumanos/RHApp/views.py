@@ -307,3 +307,26 @@ def deleteEmpleados(request, pk):
         return redirect('/empleados')
     context = {'item': empleados}
     return render(request, 'deleteEmpleados.html', context)
+
+# User Login
+
+def logout_view(request):
+
+    logout(request)
+    return HttpResponseRedirect(reverse('RHApp:dashboard'))
+
+def register(request):
+    if request.method != 'POST':
+        form = UserCreationForm(data = request.POST)
+    else:
+        form = UserCreationForm(data = request.POST)
+
+        if (form.is_valid()):
+            new_user = form.save()
+
+            authenticated_user = authenticate(username=new_user.username, password= request.POST['password1'])
+            login(request, authenticated_user)
+            return HttpResponseRedirect(reverse('RHApp:dashboard'))
+
+    context = {'form': form}
+    return render(request, 'register.html', context)

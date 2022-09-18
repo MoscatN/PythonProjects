@@ -22,8 +22,8 @@
                         <th>Delete</th>
                     </tr>
                 </thead>
-                {% for ce in competencia %}
                 <tbody>
+                {% for ce in competencia %}
                     <tr>
                         <td>{{ce.Descripcion}}</td>
                         <td>
@@ -37,8 +37,8 @@
                         <td><a href="{% url 'delete_competencia' ce.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
-                </tbody>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>

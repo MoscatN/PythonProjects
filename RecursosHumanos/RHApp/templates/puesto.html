@@ -25,8 +25,8 @@
                         <th></th>
                     </tr>
                 </thead>
-                {% for p in puesto %}
                 <tbody>
+                {% for p in puesto %}
                         <tr>
                             <td>{{p.Puesto}}</td>
                             <td>{{p.Riesgo}}</td>
@@ -43,8 +43,8 @@
                             <td><a href="{% url 'delete_puesto' p.id %}" class="btn btn-danger">Delete</a></td>
 
                         </tr>
-                    </tbody>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>

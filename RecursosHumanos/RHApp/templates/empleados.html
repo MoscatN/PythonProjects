@@ -27,8 +27,8 @@
                     <th></th>
                 </tr>
                 </thead>
-                {% for emp in empleados %}
                 <tbody>
+                {% for emp in empleados %}
                     <tr>
                         <td>{{emp.Cedula}}</td>
                         <td>{{emp.Nombre}}</td>
@@ -47,8 +47,8 @@
                         <td><a href="{% url 'delete_empleados' emp.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
+                                {% endfor %}
                     </tbody>
-                {% endfor %}
             </table>
         </div>
     </div>

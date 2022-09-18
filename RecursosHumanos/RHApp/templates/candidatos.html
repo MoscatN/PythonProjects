@@ -27,8 +27,8 @@
                         <th>Recomendado Por</th>
                     </tr>
                 </thead>
-                {% for cnd in Candidatos %}
                 <tbody>
+                {% for cnd in Candidatos %}
                     <tr>
                         <td>{{cnd.Cedula}}</td>
                         <td>{{cnd.Nombre}}</td>
@@ -44,8 +44,8 @@
                         <td><a href="{% url 'delete_candidatos' cnd.id %}" class="btn btn-danger">Delete</a></td>
 
                     </tr>
-                </tbody>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
