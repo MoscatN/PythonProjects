@@ -2,6 +2,23 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from .ValidacionCedula import validarCedula
 from django.core.validators import MinValueValidator
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.decorators import permission_required
+
+# Users
+
+# @permission_required('RHApp.add_Candidato')
+
+# class User(AbstractUser):
+#     Candidato = 1
+#     RH = 2
+#
+#     ROLE_CHOICE = (
+#         (Candidato, 'Candidato'),
+#         (RH, 'RH')
+#     )
+#
+#     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE, blank=True, null=True)
 
 # Create your models here.
 

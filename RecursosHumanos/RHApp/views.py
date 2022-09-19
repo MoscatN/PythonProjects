@@ -1,9 +1,12 @@
 from django.db import models
 from django.shortcuts import render, redirect
-from django.http import FileResponse, HttpResponse
+from django.http import FileResponse, HttpResponse, HttpResponseRedirect
 from .models import *
 from .forms import *
 import csv
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, logout, authenticate
+from django.urls import reverse
 
 # CSV Generator
 def exportCSV(request):
@@ -309,24 +312,21 @@ def deleteEmpleados(request, pk):
     return render(request, 'deleteEmpleados.html', context)
 
 # User Login
+def loginView(request):
+    context = {}
+    return render(request, 'login.html', context)
 
-def logout_view(request):
-
-    logout(request)
-    return HttpResponseRedirect(reverse('RHApp:dashboard'))
+def logoutView(request):
+    context = {}
+    return render(request, 'logout.html', context)
 
 def register(request):
-    if request.method != 'POST':
-        form = UserCreationForm(data = request.POST)
-    else:
-        form = UserCreationForm(data = request.POST)
+    form = CreateUserForm()
 
-        if (form.is_valid()):
-            new_user = form.save()
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
 
-            authenticated_user = authenticate(username=new_user.username, password= request.POST['password1'])
-            login(request, authenticated_user)
-            return HttpResponseRedirect(reverse('RHApp:dashboard'))
-
-    context = {'form': form}
+    context = {'form':form}
     return render(request, 'register.html', context)

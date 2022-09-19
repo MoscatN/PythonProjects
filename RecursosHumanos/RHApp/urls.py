@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib import admin
-
+from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -42,6 +42,10 @@ urlpatterns = [
     path('create_empleados/', views.createEmpleados, name="create_empleados"),
     path('update_empleados/<str:pk>/', views.updateEmpleados, name="update_empleados"),
     path('delete_empleados/<str:pk>/', views.deleteEmpleados, name="delete_empleados"),
+
+    path('login/', views.loginView, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('register/', views.register, name='register')
 
 
 ]
