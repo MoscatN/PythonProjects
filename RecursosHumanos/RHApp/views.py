@@ -3,7 +3,9 @@ from django.shortcuts import render, redirect
 from django.http import FileResponse, HttpResponse, HttpResponseRedirect
 from .models import *
 from .forms import *
+from django.contrib.auth import authenticate, login, logout
 import csv
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.urls import reverse
@@ -313,6 +315,7 @@ def deleteEmpleados(request, pk):
 
 # User Login
 def loginView(request):
+
     context = {}
     return render(request, 'login.html', context)
 
@@ -327,6 +330,10 @@ def register(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
+            user = form.cleaned_data.get('username')
+            messages.success(request, 'La cuenta' + user + 'ha sido creada')
+
+            return redirect('login')
 
     context = {'form':form}
     return render(request, 'register.html', context)
