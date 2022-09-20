@@ -1,3 +1,10 @@
+{% load static %}
+
+<style>
+
+</style>
+
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">RH Management</a>
@@ -34,6 +41,9 @@
       </ul>
     </div>
   </div>
+    <span class="">Hola, {{request.user}}</span>
+    <span><a href="{% url 'logout' %}">Logout</a></span>
+
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>

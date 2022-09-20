@@ -333,12 +333,24 @@ def deleteEmpleados(request, pk):
 # User Login
 def loginView(request):
 
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')
+        else:
+            messages.info(request, 'El Usuario o la Contraseña no es correcto')
+
     context = {}
     return render(request, 'login.html', context)
 
 def logoutView(request):
-    context = {}
-    return render(request, 'logout.html', context)
+    logout(request)
+    return redirect('login')
 
 def register(request):
     form = CreateUserForm()

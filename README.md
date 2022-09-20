@@ -10,4 +10,4 @@ Es util para manejar la data ingresada en la app, es posible utilizar un for-eac
 para acceder a los datos de manera limpia y ordenada. 
 OJO: **Tener en cuenta la Identacion tipica de python.**
 
-1. Solucionado Bug de la Datatable, el <tbody> estaba dentro del for 
+1. Solucionado Bug de la Datatable, el tbody estaba dentro del for 
