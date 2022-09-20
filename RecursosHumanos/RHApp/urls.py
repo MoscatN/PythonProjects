@@ -13,7 +13,9 @@ urlpatterns = [
     path('explaboral/', views.experienciaLaboral),
     path('empleados/', views.empleados),
     path('candidatos/', views.candidatos),
+    path('CandidatosSelecc/', views.candidatosSelection),
     path('export_csv/', views.exportCSV, name="export_csv"),
+    path('select_candidatos/<str:pk>/', views.CandidatosProcess, name="select_candidatos"),
 
     path('create_idioma/', views.createIdioma, name="create_idioma"),
     path('update_idioma/<str:pk>/', views.updateIdioma, name="update_idioma"),
@@ -45,7 +47,7 @@ urlpatterns = [
 
     path('login/', views.loginView, name='login'),
     path('logout/', views.logout, name='logout'),
-    path('register/', views.register, name='register')
+    path('register/', views.register, name='register'),
 
 
 ]

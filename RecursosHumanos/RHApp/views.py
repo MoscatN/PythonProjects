@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.urls import reverse
+import datetime
 
 # CSV Generator
 def exportCSV(request):
@@ -24,9 +25,21 @@ def exportCSV(request):
         writer.writerow([empleado.Cedula, empleado.Nombre, empleado.Fecha_Ingreso, empleado.Departamento, empleado.SalarioMensual, empleado.Puesto, empleado.Activo])
 
     return response
+
+def CandidatosProcess(request, pk):
+    #Recibe el ID del registro seleccionado y almacena su informacion dentro de la variable creada
+    candidato = Candidatos.objects.filter(id=pk)
+
+    #Explora cada campo del modelo candidato y lo inserta en los campos de Empleado asignados
+    for cnd in candidato:
+        Empleados.objects.create(Cedula=cnd.Cedula, Nombre=cnd.Nombre, Fecha_Ingreso=datetime.datetime.now(), Departamento=cnd.Departamento, SalarioMensual=cnd.SalarioAspirado, Puesto=cnd.PuestoAspira, Activo=True)
+
+    #Elimina el Candidato seleccionado
+    Candidatos.objects.filter(id=pk).delete()
+    return redirect('/empleados')
+
 def home(request):
     return render(request, 'dashboard.html')
-
 
 def idiomas(request):
     idiomas = Idioma.objects.all()
@@ -56,6 +69,10 @@ def empleados(request):
 def candidatos(request):
     candidatos = Candidatos.objects.all()
     return render(request, 'candidatos.html', {'candidatos': candidatos})
+
+def candidatosSelection(request):
+    Candidato = Candidatos.objects.all()
+    return render(request, 'CandidatosSelection.html', {'Candidato': Candidato})
 
 #Idiomas (Modelo)
 

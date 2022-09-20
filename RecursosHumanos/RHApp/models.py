@@ -143,6 +143,13 @@ class Candidatos(models.Model):
                 {'Cedula': "La cedula ingresada es incorrecta"}
             )
 
+    def ToArchive(self):
+        from django.db import connection, transaction
+        cursor = connection.cursor()
+        cursor.execute("Insert Into Empleados")
+        transaction.commit_unless_managed()
+        self.delete()
+
 class Empleados(models.Model):
 
     Cedula = models.CharField(max_length=13, unique=True)

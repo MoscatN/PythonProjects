@@ -4,8 +4,6 @@
 
 <br>
 
-<a class="btn btn-info btn-sm btn-block" href="{% url 'create_candidatos' %}">Create</a>
-
 <div class="row">
     <div class="col-md">
         <div class="card card-body">
@@ -25,10 +23,11 @@
                         <th>Capacitaciones Principales</th>
                         <th>Experiencia Laboral</th>
                         <th>Recomendado Por</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                {% for cnd in candidatos %}
+                {% for cnd in Candidato %}
                     <tr>
                         <td>{{cnd.Cedula}}</td>
                         <td>{{cnd.Nombre}}</td>
@@ -40,10 +39,7 @@
                         <td>{{cnd.Exp_Laboral}}</td>
                         <td>{{cnd.RecomendadoPor}}</td>
 
-                        <td><a href="{% url 'update_candidatos' cnd.id %}" class="btn btn-warning">Edit</a></td>
-                        <td><a href="{% url 'delete_candidatos' cnd.id %}" class="btn btn-danger">Delete</a></td>
                         <td><a href="{% url 'select_candidatos' cnd.id %}" class="btn btn-success">Select</a></td>
-
 
                     </tr>
                 {% endfor %}
