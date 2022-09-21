@@ -3,15 +3,17 @@
 {% block content %}
 
 {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
+<div class="alert alert-warning">
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
 {% endif %}
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 
 <br>
-
 <a class="btn btn-info btn-sm btn-block" href="{% url 'create_candidatos' %}">Create</a>
 
 <div class="row">
@@ -33,6 +35,8 @@
                         <th>Capacitaciones Principales</th>
                         <th>Experiencia Laboral</th>
                         <th>Recomendado Por</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,10 +53,7 @@
                         <td>{{cnd.RecomendadoPor}}</td>
 
                         <td><a href="{% url 'update_candidatos' cnd.id %}" class="btn btn-warning">Edit</a></td>
-                        <td><a href="{% url 'delete_candidatos' cnd.id %}" class="btn btn-danger">Delete</a></td>
-                        <td><a href="{% url 'select_candidatos' cnd.id %}" class="btn btn-success">Select</a></td>
-
-
+                        <td><a href="{% url 'delete_candidatos' cnd.id %}"><i class='bx bxs-trash-alt'></i></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
