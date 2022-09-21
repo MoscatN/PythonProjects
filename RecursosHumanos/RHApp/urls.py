@@ -13,6 +13,7 @@ urlpatterns = [
     path('explaboral/', views.experienciaLaboral),
     path('empleados/', views.empleados),
     path('candidatos/', views.candidatos),
+    path('user/', views.userPage),
     path('CandidatosSelecc/', views.candidatosSelection),
     path('export_csv/', views.exportCSV, name="export_csv"),
     path('select_candidatos/<str:pk>/', views.CandidatosProcess, name="select_candidatos"),
@@ -46,7 +47,7 @@ urlpatterns = [
     path('delete_empleados/<str:pk>/', views.deleteEmpleados, name="delete_empleados"),
 
     path('login/', views.loginView, name='login'),
-    path('logout/', views.logout, name='logout'),
+    path('logout/', views.logoutView, name='logout'),
     path('register/', views.register, name='register'),
 
 

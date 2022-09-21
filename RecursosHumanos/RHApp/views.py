@@ -3,13 +3,16 @@ from django.shortcuts import render, redirect
 from django.http import FileResponse, HttpResponse, HttpResponseRedirect
 from .models import *
 from .forms import *
-from django.contrib.auth import authenticate, login, logout
 import csv
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.urls import reverse
 import datetime
+from django.contrib.auth.decorators import login_required
+from .decorators import unauthenticated_user, allowed_users, RH_only
+from django.contrib.auth.models import Group
+
 
 # CSV Generator
 def exportCSV(request):
@@ -26,6 +29,8 @@ def exportCSV(request):
 
     return response
 
+# Proceso de Seleccion de Candidato // Candidate Selection Process
+
 def CandidatosProcess(request, pk):
     #Recibe el ID del registro seleccionado y almacena su informacion dentro de la variable creada
     candidato = Candidatos.objects.filter(id=pk)
@@ -38,44 +43,112 @@ def CandidatosProcess(request, pk):
     Candidatos.objects.filter(id=pk).delete()
     return redirect('/empleados')
 
-def home(request):
-    return render(request, 'dashboard.html')
+# User Login
+def loginView(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+    else:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
 
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('/')
+            else:
+                messages.info(request, 'El Usuario o la Contraseña no es correcto')
+
+        context = {}
+        return render(request, 'login.html', context)
+
+def logoutView(request):
+    logout(request)
+    return redirect('login')
+
+def register(request):
+
+    form = CreateUserForm()
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
+
+            group = Group.objects.get(name='Postulante')
+            user.groups.add(group)
+
+            messages.success(request, 'La cuenta' + username + 'ha sido creada')
+
+            return redirect('login')
+
+    context = {'form':form}
+    return render(request, 'register.html', context)
+
+# Models View // Vista de los modelos
+
+@login_required(login_url='login')
+def home(request):
+    current_group = request.user.groups.values_list("name", flat=True)
+    context = {
+        "is_RH": "RH" in current_group
+    }
+    return render(request, 'dashboard.html', context)
+
+@login_required(login_url='login')
+@RH_only
 def idiomas(request):
     idiomas = Idioma.objects.all()
     return render(request, 'idiomas.html', {'idiomas': idiomas})
 
+@login_required(login_url='login')
+@RH_only
 def capacitaciones(request):
     capacitaciones = Capacitaciones.objects.all()
     return render(request, 'capacitaciones.html', {'capacitaciones': capacitaciones})
 
-
+@login_required(login_url='login')
+@RH_only
 def competencia(request):
     competencia = Competencia.objects.all()
     return render(request, 'competencia.html', {'competencia': competencia})
 
+@login_required(login_url='login')
+@RH_only
 def puesto(request):
     puesto = Puesto.objects.all()
     return render(request, 'puesto.html', {'puesto': puesto})
 
+@login_required(login_url='login')
 def experienciaLaboral(request):
     experienciaLaboral = ExperienciaLaboral.objects.all()
     return render(request, 'expLaboral.html', {'experienciaLaboral': experienciaLaboral})
 
+@login_required(login_url='login')
+@RH_only
 def empleados(request):
     empleados = Empleados.objects.all()
     return render(request, 'empleados.html', {'empleados': empleados})
 
+@login_required(login_url='login')
 def candidatos(request):
     candidatos = Candidatos.objects.all()
     return render(request, 'candidatos.html', {'candidatos': candidatos})
 
+@login_required(login_url='login')
+@RH_only
 def candidatosSelection(request):
     Candidato = Candidatos.objects.all()
     return render(request, 'CandidatosSelection.html', {'Candidato': Candidato})
 
-#Idiomas (Modelo)
+def userPage(request):
+    context = {}
+    return render(request, 'user.html')
 
+#Idiomas (Modelo)
+@login_required(login_url='login')
+@RH_only
 def createIdioma(request):
     form = IdiomaForm()
 
@@ -88,7 +161,8 @@ def createIdioma(request):
 
     context = {'form': form}
     return render(request, 'idiomasForm.html', context)
-
+@login_required(login_url='login')
+@RH_only
 def updateIdioma(request, pk):
     idioma = Idioma.objects.get(id=pk)
     form = IdiomaForm(instance=idioma)
@@ -102,7 +176,8 @@ def updateIdioma(request, pk):
 
     context = {'form': form}
     return render(request, 'idiomasForm.html', context)
-
+@login_required(login_url='login')
+@RH_only
 def deleteIdioma(request, pk):
     idioma = Idioma.objects.get(id=pk)
     if request.method == "POST":
@@ -112,7 +187,8 @@ def deleteIdioma(request, pk):
     return render(request, 'delete.html', context)
 
 #Capacitaciones (Modelo)
-
+@login_required(login_url='login')
+@RH_only
 def createCapacitaciones(request):
     form = CapacitacionesForm()
 
@@ -126,7 +202,8 @@ def createCapacitaciones(request):
     context = {'form': form}
     return render(request, 'capacitacionesForm.html', context)
 
-
+@login_required(login_url='login')
+@RH_only
 def updateCapacitaciones(request, pk):
     capacitaciones = Capacitaciones.objects.get(id=pk)
     form = CapacitacionesForm(instance=capacitaciones)
@@ -141,6 +218,8 @@ def updateCapacitaciones(request, pk):
     context = {'form': form}
     return render(request, 'capacitacionesForm.html', context)
 
+@login_required(login_url='login')
+@RH_only
 def deleteCapacitaciones(request, pk):
     capacitaciones = Capacitaciones.objects.get(id=pk)
     if request.method == "POST":
@@ -151,6 +230,8 @@ def deleteCapacitaciones(request, pk):
 
 # Competencias (Modelo)
 
+@login_required(login_url='login')
+@RH_only
 def createCompetencias(request):
     form = CompetenciaForm()
 
@@ -164,7 +245,8 @@ def createCompetencias(request):
     context = {'form': form}
     return render(request, 'competenciaForm.html', context)
 
-
+@login_required(login_url='login')
+@RH_only
 def updateCompetencia(request, pk):
     competencia = Competencia.objects.get(id=pk)
     form = CompetenciaForm(instance=capacitaciones)
@@ -179,6 +261,8 @@ def updateCompetencia(request, pk):
     context = {'form': form}
     return render(request, 'competenciaForm.html', context)
 
+@login_required(login_url='login')
+@RH_only
 def deleteCompetencia(request, pk):
     competencia = Competencia.objects.get(id=pk)
     if request.method == "POST":
@@ -189,6 +273,8 @@ def deleteCompetencia(request, pk):
 
 #Puesto (Model)
 
+@login_required(login_url='login')
+@RH_only
 def createPuesto(request):
     form = PuestoForm()
 
@@ -202,6 +288,8 @@ def createPuesto(request):
     context = {'form': form}
     return render(request, 'puestoForm.html', context)
 
+@login_required(login_url='login')
+@RH_only
 def updatePuesto(request, pk):
     puesto = Puesto.objects.get(id=pk)
     form = PuestoForm(instance=puesto)
@@ -216,6 +304,8 @@ def updatePuesto(request, pk):
     context = {'form': form}
     return render(request, 'puestoForm.html', context)
 
+@login_required(login_url='login')
+@RH_only
 def deletePuesto(request, pk):
     puesto = Puesto.objects.get(id=pk)
     if request.method == "POST":
@@ -295,6 +385,8 @@ def deleteCandidatos(request, pk):
     context = {'item': candidatos}
     return render(request, 'delete.html', context)
 
+@login_required(login_url='login')
+@RH_only
 def createEmpleados(request):
     form = EmpleadosForm()
 
@@ -308,6 +400,8 @@ def createEmpleados(request):
     context = {'form': form}
     return render(request, 'empleadosForm.html', context)
 
+@login_required(login_url='login')
+@RH_only
 def updateEmpleados(request, pk):
     empleados = Empleados.objects.get(id=pk)
     form = EmpleadosForm(instance=empleados)
@@ -322,6 +416,8 @@ def updateEmpleados(request, pk):
     context = {'form': form}
     return render(request, 'empleadosForm.html', context)
 
+@login_required(login_url='login')
+@RH_only
 def deleteEmpleados(request, pk):
     empleados = Empleados.objects.get(id=pk)
     if request.method == "POST":
@@ -329,40 +425,3 @@ def deleteEmpleados(request, pk):
         return redirect('/empleados')
     context = {'item': empleados}
     return render(request, 'deleteEmpleados.html', context)
-
-# User Login
-def loginView(request):
-
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect('/')
-        else:
-            messages.info(request, 'El Usuario o la Contraseña no es correcto')
-
-    context = {}
-    return render(request, 'login.html', context)
-
-def logoutView(request):
-    logout(request)
-    return redirect('login')
-
-def register(request):
-    form = CreateUserForm()
-
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(request, 'La cuenta' + user + 'ha sido creada')
-
-            return redirect('login')
-
-    context = {'form':form}
-    return render(request, 'register.html', context)

@@ -8,6 +8,14 @@ se ingresa su nombre, correo(no es obligatorio) y password.
      python manage.py shell
 Es util para manejar la data ingresada en la app, es posible utilizar un for-each
 para acceder a los datos de manera limpia y ordenada. 
+
 OJO: **Tener en cuenta la Identacion tipica de python.**
 
 1. Solucionado Bug de la Datatable, el tbody estaba dentro del for 
+
+Duda: 
+Crear a RH usuarios limitados, o hacerlo automaticamente? 
+
+TODO: 
+1. Validación en los date fields.
+2. Validar que el registro en **Idiomas** es UNIQUE.
