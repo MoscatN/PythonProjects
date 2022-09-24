@@ -20,28 +20,37 @@ def exportCSV(request):
     response['Content-Disposition'] = 'attachment; filename=Empleados.csv'
 
     writer = csv.writer(response)
-    writer.writerow(['Cedula','Nombre','Fecha Ingreso', 'Departamento', 'Salario Mensual', 'Puesto', 'Estado'])
+    writer.writerow(['Cedula', 'Nombre', 'Fecha Ingreso', 'Departamento', 'Salario Mensual', 'Puesto', 'Estado'])
 
     empleados = Empleados.objects.all()
+    fechamin = '07-01-2022'
+    datetime.date(fechamin)
 
     for empleado in empleados:
-        writer.writerow([empleado.Cedula, empleado.Nombre, empleado.Fecha_Ingreso, empleado.Departamento, empleado.SalarioMensual, empleado.Puesto, empleado.Activo])
+
+        if empleado.Fecha_Ingreso > fechamin:
+            writer.writerow([empleado.Cedula, empleado.Nombre, empleado.Fecha_Ingreso, empleado.Departamento,
+                             empleado.SalarioMensual, empleado.Puesto, empleado.Activo])
 
     return response
+
 
 # Proceso de Seleccion de Candidato // Candidate Selection Process
 
 def CandidatosProcess(request, pk):
-    #Recibe el ID del registro seleccionado y almacena su informacion dentro de la variable creada
+    # Recibe el ID del registro seleccionado y almacena su informacion dentro de la variable creada
     candidato = Candidatos.objects.filter(id=pk)
 
-    #Explora cada campo del modelo candidato y lo inserta en los campos de Empleado asignados
+    # Explora cada campo del modelo candidato y lo inserta en los campos de Empleado asignados
     for cnd in candidato:
-        Empleados.objects.create(Cedula=cnd.Cedula, Nombre=cnd.Nombre, Fecha_Ingreso=datetime.datetime.now(), Departamento=cnd.Departamento, SalarioMensual=cnd.SalarioAspirado, Puesto=cnd.PuestoAspira, Activo=True)
+        Empleados.objects.create(Cedula=cnd.Cedula, Nombre=cnd.Nombre, Fecha_Ingreso=datetime.datetime.now(),
+                                 Departamento=cnd.Departamento, SalarioMensual=cnd.SalarioAspirado,
+                                 Puesto=cnd.PuestoAspira, Activo=True)
 
-    #Elimina el Candidato seleccionado
+    # Elimina el Candidato seleccionado
     Candidatos.objects.filter(id=pk).delete()
     return redirect('/empleados')
+
 
 # User Login
 def loginView(request):
@@ -63,12 +72,13 @@ def loginView(request):
         context = {}
         return render(request, 'login.html', context)
 
+
 def logoutView(request):
     logout(request)
     return redirect('login')
 
-def register(request):
 
+def register(request):
     form = CreateUserForm()
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -83,8 +93,9 @@ def register(request):
 
             return redirect('login')
 
-    context = {'form':form}
+    context = {'form': form}
     return render(request, 'register.html', context)
+
 
 # Models View // Vista de los modelos
 
@@ -96,11 +107,13 @@ def home(request):
     }
     return render(request, 'dashboard.html', context)
 
+
 @login_required(login_url='login')
 @RH_only
 def idiomas(request):
     idiomas = Idioma.objects.all()
     return render(request, 'idiomas.html', {'idiomas': idiomas})
+
 
 @login_required(login_url='login')
 @RH_only
@@ -108,11 +121,13 @@ def capacitaciones(request):
     capacitaciones = Capacitaciones.objects.all()
     return render(request, 'capacitaciones.html', {'capacitaciones': capacitaciones})
 
+
 @login_required(login_url='login')
 @RH_only
 def competencia(request):
     competencia = Competencia.objects.all()
     return render(request, 'competencia.html', {'competencia': competencia})
+
 
 @login_required(login_url='login')
 @RH_only
@@ -120,10 +135,12 @@ def puesto(request):
     puesto = Puesto.objects.all()
     return render(request, 'puesto.html', {'puesto': puesto})
 
+
 @login_required(login_url='login')
 def experienciaLaboral(request):
     experienciaLaboral = ExperienciaLaboral.objects.all()
     return render(request, 'expLaboral.html', {'experienciaLaboral': experienciaLaboral})
+
 
 @login_required(login_url='login')
 @RH_only
@@ -131,10 +148,12 @@ def empleados(request):
     empleados = Empleados.objects.all()
     return render(request, 'empleados.html', {'empleados': empleados})
 
+
 @login_required(login_url='login')
 def candidatos(request):
     candidatos = Candidatos.objects.all()
     return render(request, 'candidatos.html', {'candidatos': candidatos})
+
 
 @login_required(login_url='login')
 @RH_only
@@ -142,11 +161,13 @@ def candidatosSelection(request):
     Candidato = Candidatos.objects.all()
     return render(request, 'CandidatosSelection.html', {'Candidato': Candidato})
 
+
 def userPage(request):
     context = {}
     return render(request, 'user.html')
 
-#Idiomas (Modelo)
+
+# Idiomas (Modelo)
 @login_required(login_url='login')
 @RH_only
 def createIdioma(request):
@@ -161,6 +182,8 @@ def createIdioma(request):
 
     context = {'form': form}
     return render(request, 'idiomasForm.html', context)
+
+
 @login_required(login_url='login')
 @RH_only
 def updateIdioma(request, pk):
@@ -176,6 +199,8 @@ def updateIdioma(request, pk):
 
     context = {'form': form}
     return render(request, 'idiomasForm.html', context)
+
+
 @login_required(login_url='login')
 @RH_only
 def deleteIdioma(request, pk):
@@ -184,9 +209,10 @@ def deleteIdioma(request, pk):
         idioma.delete()
         return redirect('/idiomas')
     context = {'item': idioma}
-    return render(request, 'delete.html', context)
+    return render(request, 'deleteIdioma.html', context)
 
-#Capacitaciones (Modelo)
+
+# Capacitaciones (Modelo)
 @login_required(login_url='login')
 @RH_only
 def createCapacitaciones(request):
@@ -201,6 +227,7 @@ def createCapacitaciones(request):
 
     context = {'form': form}
     return render(request, 'capacitacionesForm.html', context)
+
 
 @login_required(login_url='login')
 @RH_only
@@ -218,6 +245,7 @@ def updateCapacitaciones(request, pk):
     context = {'form': form}
     return render(request, 'capacitacionesForm.html', context)
 
+
 @login_required(login_url='login')
 @RH_only
 def deleteCapacitaciones(request, pk):
@@ -226,7 +254,8 @@ def deleteCapacitaciones(request, pk):
         capacitaciones.delete()
         return redirect('/idiomas')
     context = {'item': capacitaciones}
-    return render(request, 'delete.html', context)
+    return render(request, 'deleteCapacitaciones.html', context)
+
 
 # Competencias (Modelo)
 
@@ -245,6 +274,7 @@ def createCompetencias(request):
     context = {'form': form}
     return render(request, 'competenciaForm.html', context)
 
+
 @login_required(login_url='login')
 @RH_only
 def updateCompetencia(request, pk):
@@ -261,6 +291,7 @@ def updateCompetencia(request, pk):
     context = {'form': form}
     return render(request, 'competenciaForm.html', context)
 
+
 @login_required(login_url='login')
 @RH_only
 def deleteCompetencia(request, pk):
@@ -269,9 +300,10 @@ def deleteCompetencia(request, pk):
         competencia.delete()
         return redirect('/competencia')
     context = {'item': competencia}
-    return render(request, 'delete.html', context)
+    return render(request, 'deleteCompetencias.html', context)
 
-#Puesto (Model)
+
+# Puesto (Model)
 
 @login_required(login_url='login')
 @RH_only
@@ -287,6 +319,7 @@ def createPuesto(request):
 
     context = {'form': form}
     return render(request, 'puestoForm.html', context)
+
 
 @login_required(login_url='login')
 @RH_only
@@ -304,6 +337,7 @@ def updatePuesto(request, pk):
     context = {'form': form}
     return render(request, 'puestoForm.html', context)
 
+
 @login_required(login_url='login')
 @RH_only
 def deletePuesto(request, pk):
@@ -312,7 +346,8 @@ def deletePuesto(request, pk):
         puesto.delete()
         return redirect('/puesto')
     context = {'item': puesto}
-    return render(request, 'delete.html', context)
+    return render(request, 'deletePuesto.html', context)
+
 
 # Experiencia Laboral
 def createExpLaboral(request):
@@ -328,6 +363,7 @@ def createExpLaboral(request):
     context = {'form': form}
     return render(request, 'expLabForm.html', context)
 
+
 def updateExpLaboral(request, pk):
     experienciaLaboral = ExperienciaLaboral.objects.get(id=pk)
     form = ExpLabForm(instance=experienciaLaboral)
@@ -342,13 +378,15 @@ def updateExpLaboral(request, pk):
     context = {'form': form}
     return render(request, 'expLabForm.html', context)
 
+
 def deleteExpLaboral(request, pk):
     experienciaLaboral = ExperienciaLaboral.objects.get(id=pk)
     if request.method == "POST":
         experienciaLaboral.delete()
         return redirect('/explaboral')
     context = {'item': experienciaLaboral}
-    return render(request, 'delete.html', context)
+    return render(request, 'deleteExpLab.html', context)
+
 
 def createCandidatos(request):
     form = CandidatosForm()
@@ -362,6 +400,7 @@ def createCandidatos(request):
 
     context = {'form': form}
     return render(request, 'candidatosForm.html', context)
+
 
 def updateCandidatos(request, pk):
     candidatos = Candidatos.objects.get(id=pk)
@@ -377,13 +416,15 @@ def updateCandidatos(request, pk):
     context = {'form': form}
     return render(request, 'candidatosForm.html', context)
 
+
 def deleteCandidatos(request, pk):
     candidatos = Candidatos.objects.get(id=pk)
     if request.method == "POST":
         candidatos.delete()
         return redirect('/candidatos')
     context = {'item': candidatos}
-    return render(request, 'delete.html', context)
+    return render(request, 'deleteCandidatos.html', context)
+
 
 @login_required(login_url='login')
 @RH_only
@@ -400,6 +441,7 @@ def createEmpleados(request):
     context = {'form': form}
     return render(request, 'empleadosForm.html', context)
 
+
 @login_required(login_url='login')
 @RH_only
 def updateEmpleados(request, pk):
@@ -415,6 +457,7 @@ def updateEmpleados(request, pk):
 
     context = {'form': form}
     return render(request, 'empleadosForm.html', context)
+
 
 @login_required(login_url='login')
 @RH_only

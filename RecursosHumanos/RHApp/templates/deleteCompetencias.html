@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<blockquote class="blockquote">Desea borrar "{{item}}"?</blockquote>
+
+<form action="{% url 'delete_competencia' item.id %}" method="POST">
+  {% csrf_token %}
+  <a href="/competencia" class="btn btn-info">Cancel</a>
+
+  <input type="submit" name="Delete" placeholder="Delete" class="btn btn-danger">
+</form>
+
+{% endblock %}

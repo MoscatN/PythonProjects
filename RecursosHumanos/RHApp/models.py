@@ -4,6 +4,7 @@ from .ValidacionCedula import validarCedula
 from django.core.validators import MinValueValidator
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.decorators import permission_required
+from django.utils import timezone
 
 # Users
 
@@ -25,7 +26,7 @@ from django.contrib.auth.decorators import permission_required
 class Idioma(models.Model):
     """RHApp manejados por el candidato"""
 
-    Idioma = models.CharField(max_length=200)
+    Idioma = models.CharField(max_length=200, unique=True)
     Activo = models.BooleanField()
 
     def __str__(self):
@@ -49,7 +50,7 @@ class Capacitaciones(models.Model):
        (GESTION, 'Gestion'),
      ]
 
-    Descripcion = models.CharField(max_length=200)
+    Descripcion = models.CharField(max_length=200, blank=False)
     Nivel = models.CharField(
         max_length=15,
         choices=Nivel,
@@ -63,7 +64,7 @@ class Capacitaciones(models.Model):
 
 class Competencia(models.Model):
     """Competencias del Candidato"""
-    Descripcion = models.CharField(max_length=200)
+    Descripcion = models.CharField(max_length=200, unique=True)
     Activo = models.BooleanField()
 
     def __str__(self):
@@ -95,20 +96,40 @@ class Puesto(models.Model):
     def __str__(self):
         return self.Puesto
 
+    def clean(self):
+        if self.SalarioMaximo <= self.SalarioMinimo:
+            raise ValidationError(
+                {'SalarioMaximo': "El Salario Maximo no puede ser igual al minimo"}
+            )
+
 class ExperienciaLaboral(models.Model):
 
     Empresa = models.CharField(max_length=35)
 
     PuestoOcupado = models.CharField(max_length=45)
 
-    Fecha_Desde = models.DateField(auto_now_add=False, null=True)
+    Fecha_Desde = models.DateTimeField(auto_now_add=False, null=True )
 
-    Fecha_Hasta = models.DateField(auto_now_add=False, null=True)
+    Fecha_Hasta = models.DateTimeField(auto_now_add=False, null=True)
 
     Salario = models.IntegerField(validators=[MinValueValidator(0)])
 
     def __str__(self):
         return self.PuestoOcupado
+
+    #Validacion que no permite fechas mas recientes que la fecha de hoy
+    def clean(self, *args, **kwargs):
+        # run the base validation
+        super(ExperienciaLaboral, self).clean(*args, **kwargs)
+
+        if self.Fecha_Desde > timezone.now():
+            raise ValidationError(
+                {'Fecha_Desde':'La ingresada no puede ser mas reciente que el dia de hoy.'})
+
+        if self.Fecha_Hasta > timezone.now():
+            raise ValidationError(
+                {'Fecha_Hasta': 'La fecha ingresada no puede ser mas reciente que el dia de hoy.'})
+
 
 class Candidatos(models.Model):
     """"""
@@ -143,12 +164,12 @@ class Candidatos(models.Model):
                 {'Cedula': "La cedula ingresada es incorrecta"}
             )
 
-    def ToArchive(self):
-        from django.db import connection, transaction
-        cursor = connection.cursor()
-        cursor.execute("Insert Into Empleados")
-        transaction.commit_unless_managed()
-        self.delete()
+    # def ToArchive(self):
+    #     from django.db import connection, transaction
+    #     cursor = connection.cursor()
+    #     cursor.execute("Insert Into Empleados")
+    #     transaction.commit_unless_managed()
+    #     self.delete()
 
 class Empleados(models.Model):
 
