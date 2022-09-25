@@ -23,17 +23,14 @@ def exportCSV(request):
     writer.writerow(['Cedula', 'Nombre', 'Fecha Ingreso', 'Departamento', 'Salario Mensual', 'Puesto', 'Estado'])
 
     empleados = Empleados.objects.all()
-    fechamin = '07-01-2022'
-    datetime.date(fechamin)
 
     for empleado in empleados:
 
-        if empleado.Fecha_Ingreso > fechamin:
+        if empleado.Fecha_Ingreso > datetime.date(2022,1,1):
             writer.writerow([empleado.Cedula, empleado.Nombre, empleado.Fecha_Ingreso, empleado.Departamento,
                              empleado.SalarioMensual, empleado.Puesto, empleado.Activo])
 
     return response
-
 
 # Proceso de Seleccion de Candidato // Candidate Selection Process
 
@@ -52,6 +49,7 @@ def CandidatosProcess(request, pk):
     return redirect('/empleados')
 
 
+
 # User Login
 def loginView(request):
     if request.user.is_authenticated:
@@ -59,6 +57,7 @@ def loginView(request):
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
+
             password = request.POST.get('password')
 
             user = authenticate(request, username=username, password=password)
@@ -77,16 +76,22 @@ def logoutView(request):
     logout(request)
     return redirect('login')
 
-
 def register(request):
+
     form = CreateUserForm()
+
     if request.method == 'POST':
+
         form = CreateUserForm(request.POST)
+
         if form.is_valid():
+
             user = form.save()
+
             username = form.cleaned_data.get('username')
 
             group = Group.objects.get(name='Postulante')
+
             user.groups.add(group)
 
             messages.success(request, 'La cuenta ' + username + ' ha sido creada')
@@ -101,68 +106,122 @@ def register(request):
 
 @login_required(login_url='login')
 def home(request):
+
     current_group = request.user.groups.values_list("name", flat=True)
+
     context = {
         "is_RH": "RH" in current_group
     }
     return render(request, 'dashboard.html', context)
 
-
 @login_required(login_url='login')
 @RH_only
 def idiomas(request):
+    current_group = request.user.groups.values_list("name", flat=True)
+
+    context = {
+        "is_RH": "RH" in current_group
+    }
+
     idiomas = Idioma.objects.all()
-    return render(request, 'idiomas.html', {'idiomas': idiomas})
+
+    return render(request, 'idiomas.html', {'idiomas': idiomas, 'context': context})
 
 
 @login_required(login_url='login')
 @RH_only
 def capacitaciones(request):
-    capacitaciones = Capacitaciones.objects.all()
-    return render(request, 'capacitaciones.html', {'capacitaciones': capacitaciones})
+    current_group = request.user.groups.values_list("name", flat=True)
 
+    context = {
+        "is_RH": "RH" in current_group
+    }
+
+    capacitaciones = Capacitaciones.objects.all()
+
+    return render(request, 'capacitaciones.html', {'capacitaciones': capacitaciones, 'context': context})
 
 @login_required(login_url='login')
 @RH_only
 def competencia(request):
-    competencia = Competencia.objects.all()
-    return render(request, 'competencia.html', {'competencia': competencia})
+    current_group = request.user.groups.values_list("name", flat=True)
 
+    context = {
+        "is_RH": "RH" in current_group
+    }
+
+    competencia = Competencia.objects.all()
+
+    return render(request, 'competencia.html', {'competencia': competencia, 'context': context})
 
 @login_required(login_url='login')
 @RH_only
 def puesto(request):
+    current_group = request.user.groups.values_list("name", flat=True)
+
+    context = {
+        "is_RH": "RH" in current_group
+    }
+
     puesto = Puesto.objects.all()
-    return render(request, 'puesto.html', {'puesto': puesto})
+
+    return render(request, 'puesto.html', {'puesto': puesto, 'context': context})
 
 
 @login_required(login_url='login')
 def experienciaLaboral(request):
-    experienciaLaboral = ExperienciaLaboral.objects.filter(createdBy=request.user)
-    return render(request, 'expLaboral.html', {'experienciaLaboral': experienciaLaboral})
+    current_group = request.user.groups.values_list("name", flat=True)
 
+    context = {
+        "is_RH": "RH" in current_group
+    }
+
+    experienciaLaboral = ExperienciaLaboral.objects.filter(createdBy=request.user)
+
+    return render(request, 'expLaboral.html', {'experienciaLaboral': experienciaLaboral, 'context': context})
 
 @login_required(login_url='login')
 @RH_only
 def empleados(request):
-    empleados = Empleados.objects.all()
-    return render(request, 'empleados.html', {'empleados': empleados})
+    current_group = request.user.groups.values_list("name", flat=True)
 
+    context = {
+        "is_RH": "RH" in current_group
+    }
+
+    empleados = Empleados.objects.all()
+
+    return render(request, 'empleados.html', {'empleados': empleados, 'context': context})
 
 @login_required(login_url='login')
 def candidatos(request):
+    current_group = request.user.groups.values_list("name", flat=True)
+
+    context = {
+        "is_RH": "RH" in current_group
+    }
+
     candidatos = Candidatos.objects.filter(createdBy=request.user)
-    return render(request, 'candidatos.html', {'candidatos': candidatos})
+
+    return render(request, 'candidatos.html', {'candidatos': candidatos, 'context': context})
 
 
 @login_required(login_url='login')
 @RH_only
 def candidatosSelection(request):
+    current_group = request.user.groups.values_list("name", flat=True)
+
+    context = {
+        "is_RH": "RH" in current_group
+    }
+
     Candidato = Candidatos.objects.all()
-    return render(request, 'CandidatosSelection.html', {'Candidato': Candidato})
+
+    return render(request, 'CandidatosSelection.html', {'Candidato': Candidato, 'context': context})
 
 
 def userPage(request):
+
     context = {}
     return render(request, 'user.html')
 
@@ -443,7 +502,6 @@ def createEmpleados(request):
 
     context = {'form': form}
     return render(request, 'empleadosForm.html', context)
-
 
 @login_required(login_url='login')
 @RH_only

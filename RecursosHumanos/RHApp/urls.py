@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path('', views.home),
     path('idiomas/', views.idiomas),
@@ -49,6 +50,5 @@ urlpatterns = [
     path('login/', views.loginView, name='login'),
     path('logout/', views.logoutView, name='logout'),
     path('register/', views.register, name='register'),
-
 
 ]

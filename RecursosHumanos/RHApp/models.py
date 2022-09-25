@@ -1,3 +1,5 @@
+import datetime
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from .ValidacionCedula import validarCedula
@@ -90,9 +92,9 @@ class ExperienciaLaboral(models.Model):
 
     PuestoOcupado = models.CharField(max_length=45)
 
-    Fecha_Desde = models.DateTimeField(auto_now_add=False, null=True )
+    Fecha_Desde = models.DateField(auto_now_add=False, null=True )
 
-    Fecha_Hasta = models.DateTimeField(auto_now_add=False, null=True)
+    Fecha_Hasta = models.DateField(auto_now_add=False, null=True)
 
     Salario = models.IntegerField(validators=[MinValueValidator(0)])
 
@@ -106,13 +108,16 @@ class ExperienciaLaboral(models.Model):
         # run the base validation
         super(ExperienciaLaboral, self).clean(*args, **kwargs)
 
-        if self.Fecha_Desde > timezone.now():
+        if self.Fecha_Desde > datetime.date.today():
             raise ValidationError(
-                {'Fecha_Desde':'La ingresada no puede ser mas reciente que el dia de hoy.'})
+                {'Fecha_Desde': 'La ingresada no puede ser mas reciente que el dia de hoy.'})
 
-        if self.Fecha_Hasta > timezone.now():
+        if self.Fecha_Hasta > datetime.date.today():
             raise ValidationError(
-                {'Fecha_Hasta': 'La fecha ingresada no puede ser mas reciente que el dia de hoy.'})
+                {'Fecha_Hasta': 'La fecha ingresada no es correcta.'})
+        if self.Fecha_Hasta < self.Fecha_Desde:
+            raise ValidationError(
+                {'Fecha_Hasta': 'La fecha ingresada no puede ser menor a la inicial.'})
 
 
 class Candidatos(models.Model):
