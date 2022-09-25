@@ -2,26 +2,8 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from .ValidacionCedula import validarCedula
 from django.core.validators import MinValueValidator
-from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import User
 from django.utils import timezone
-
-# Users
-
-# @permission_required('RHApp.add_Candidato')
-
-# class User(AbstractUser):
-#     Candidato = 1
-#     RH = 2
-#
-#     ROLE_CHOICE = (
-#         (Candidato, 'Candidato'),
-#         (RH, 'RH')
-#     )
-#
-#     role = models.PositiveSmallIntegerField(choices=ROLE_CHOICE, blank=True, null=True)
-
-# Create your models here.
 
 class Idioma(models.Model):
     """RHApp manejados por el candidato"""
@@ -114,6 +96,8 @@ class ExperienciaLaboral(models.Model):
 
     Salario = models.IntegerField(validators=[MinValueValidator(0)])
 
+    createdBy = models.ForeignKey(User, on_delete=models.CASCADE, null=True, editable=False)
+
     def __str__(self):
         return self.PuestoOcupado
 
@@ -155,6 +139,7 @@ class Candidatos(models.Model):
     )
     RecomendadoPor = models.CharField(max_length=50)
 
+    createdBy = models.ForeignKey(User, on_delete=models.CASCADE, null=True, editable=False)
     def __str__(self):
         return self.Nombre
 

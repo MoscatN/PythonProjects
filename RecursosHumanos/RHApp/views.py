@@ -89,7 +89,7 @@ def register(request):
             group = Group.objects.get(name='Postulante')
             user.groups.add(group)
 
-            messages.success(request, 'La cuenta' + username + 'ha sido creada')
+            messages.success(request, 'La cuenta ' + username + ' ha sido creada')
 
             return redirect('login')
 
@@ -138,7 +138,7 @@ def puesto(request):
 
 @login_required(login_url='login')
 def experienciaLaboral(request):
-    experienciaLaboral = ExperienciaLaboral.objects.all()
+    experienciaLaboral = ExperienciaLaboral.objects.filter(createdBy=request.user)
     return render(request, 'expLaboral.html', {'experienciaLaboral': experienciaLaboral})
 
 
@@ -151,7 +151,7 @@ def empleados(request):
 
 @login_required(login_url='login')
 def candidatos(request):
-    candidatos = Candidatos.objects.all()
+    candidatos = Candidatos.objects.filter(createdBy=request.user)
     return render(request, 'candidatos.html', {'candidatos': candidatos})
 
 
@@ -357,6 +357,7 @@ def createExpLaboral(request):
         # print('Printing POST: ', request.POST)
         form = ExpLabForm(request.POST)
         if form.is_valid():
+            form.instance.createdBy = request.user
             form.save()
             return redirect('/explaboral')
 
@@ -392,15 +393,17 @@ def createCandidatos(request):
     form = CandidatosForm()
 
     if request.method == 'POST':
-        # print('Printing POST: ', request.POST)
+
         form = CandidatosForm(request.POST)
+
+        form.instance.createdBy = request.user
+
         if form.is_valid():
             form.save()
             return redirect('/candidatos')
 
     context = {'form': form}
     return render(request, 'candidatosForm.html', context)
-
 
 def updateCandidatos(request, pk):
     candidatos = Candidatos.objects.get(id=pk)
