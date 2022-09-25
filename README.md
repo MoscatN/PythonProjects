@@ -17,5 +17,5 @@ Duda:
 Crear a RH usuarios limitados, o hacerlo automaticamente? 
 
 TODO: 
-1. Validación en los date fields.
-2. Validar que el registro en **Idiomas** es UNIQUE.
+1. Modernizar la view de candidatos. 
+2. Testear todas las funciones de cada model. 
