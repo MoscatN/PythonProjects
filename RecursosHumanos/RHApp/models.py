@@ -130,14 +130,8 @@ class Candidatos(models.Model):
         )
     Departamento = models.CharField(max_length=50)
     SalarioAspirado = models.IntegerField(validators=[MinValueValidator(0)])
-    CompetenciasPrincipales = models.ForeignKey(
-        Competencia,
-        on_delete=models.CASCADE
-    )
-    CapacitacionesPrincipales = models.ForeignKey(
-        Capacitaciones,
-        on_delete=models.CASCADE
-    )
+    CompetenciasPrincipales = models.ManyToManyField(Competencia)
+    CapacitacionesPrincipales = models.ManyToManyField(Capacitaciones)
     Exp_Laboral = models.ForeignKey(
         ExperienciaLaboral,
         on_delete=models.CASCADE

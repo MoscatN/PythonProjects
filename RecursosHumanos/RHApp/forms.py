@@ -32,7 +32,25 @@ class ExpLabForm(ModelForm):
 class CandidatosForm(ModelForm):
     class Meta:
         model = Candidatos
-        fields = '__all__'
+        fields = ['Cedula', 'Nombre', 'PuestoAspira', 'Departamento', 'SalarioAspirado', 'CompetenciasPrincipales', 'CapacitacionesPrincipales', 'Exp_Laboral', 'RecomendadoPor']
+
+    Cedula = forms.CharField()
+    Nombre = forms.CharField()
+    PuestoAspira = forms.ModelChoiceField(queryset=Puesto.objects.all(), initial=0)
+    CompetenciasPrincipales = forms.ModelMultipleChoiceField(
+        queryset=Competencia.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    CapacitacionesPrincipales = forms.ModelMultipleChoiceField(
+        queryset=Capacitaciones.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    Exp_Laboral = models.ForeignKey(ExperienciaLaboral, on_delete=models.CASCADE)
+    RecomendadoPor = models.CharField
+
+    def __int__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.Exp_Laboral.queryset = ExperienciaLaboral.objects.none()
 
 class EmpleadosForm(ModelForm):
     class Meta:

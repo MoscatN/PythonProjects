@@ -4,50 +4,37 @@
 
 <br>
 
-<div class="row">
+<div class="row hidden-md-up">
     <div class="col-md">
         <div class="card card-body">
             <h5>Candidatos</h5>
         </div>
+    </div>
+</div>
         <hr>
-        <div class="card card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Cedula</th>
-                        <th>Nombre</th>
-                        <th>Puesto Aspirado</th>
-                        <th>Departamento</th>
-                        <th>Salario Aspirado</th>
-                        <th>Competencias Principales</th>
-                        <th>Capacitaciones Principales</th>
-                        <th>Experiencia Laboral</th>
-                        <th>Recomendado Por</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for cnd in Candidato %}
-                    <tr>
-                        <td>{{cnd.Cedula}}</td>
-                        <td>{{cnd.Nombre}}</td>
-                        <td>{{cnd.PuestoAspira}}</td>
-                        <td>{{cnd.Departamento}}</td>
-                        <td>{{cnd.SalarioAspirado}}</td>
-                        <td>{{cnd.CompetenciasPrincipales}}</td>
-                        <td>{{cnd.CapacitacionesPrincipales}}</td>
-                        <td>{{cnd.Exp_Laboral}}</td>
-                        <td>{{cnd.RecomendadoPor}}</td>
-
-                        <td><a href="{% url 'select_candidatos' cnd.id %}" class="btn btn-success">Select</a></td>
-                        <td><a href="{% url 'delete_candidatos' cnd.id %}" class="btn btn-danger">Delete</a></td>
-
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+<div class="row hidden-md-up row-cols-3">
+        {% for cnd in Candidato %}
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem">
+                    <div class="card-body">
+                        <h5 class="card-title">{{cnd.Nombre}}</h5>
+                        <ul>
+                            <li>{{cnd.Cedula}}</li>
+                            <li>{{ cnd.PuestoAspira }} </li>
+                            <li>{{ cnd.CompetenciasPrincipales }}</li>
+                            <li>{{ cnd.CapacitacionesPrincipales}}</li>
+                            <li>{{ cnd.Exp_Laboral }}</li>
+                            <li>Recomendado por {{ cnd.RecomendadoPor}}</li>
+                        </ul>
+                            <td><a href="{% url 'select_candidatos' cnd.id %}" class="btn btn-success">Select</a></td>
+                            <td><a href="{% url 'delete_candidatos' cnd.id %}" class="btn btn-danger">Delete</a></td>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
+
 
 {% endblock content%}

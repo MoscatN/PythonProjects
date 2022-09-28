@@ -450,7 +450,7 @@ def deleteExpLaboral(request, pk):
 
 def createCandidatos(request):
     form = CandidatosForm()
-
+    # form.instance.Exp_Laboral = Candidatos.createdBy.objects.filter(id=pk)
     if request.method == 'POST':
 
         form = CandidatosForm(request.POST)
