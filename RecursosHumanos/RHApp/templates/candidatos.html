@@ -17,7 +17,7 @@
 <a class="btn btn-info btn-sm btn-block" href="{% url 'create_candidatos' %}">Create</a>
 
 <div class="row">
-    <div class="col-md">
+    <div class="col-md text-center">
         <div class="card card-body">
             <h5>Candidatos</h5>
         </div>
@@ -47,8 +47,16 @@
                         <td>{{cnd.PuestoAspira}}</td>
                         <td>{{cnd.Departamento}}</td>
                         <td>{{cnd.SalarioAspirado}}</td>
-                        <td>{{cnd.CompetenciasPrincipales}}</td>
-                        <td>{{cnd.CapacitacionesPrincipales}}</td>
+                        <td>
+                        {% for comp in cnd.CompetenciasPrincipales.all %}
+                           {{comp.Descripcion}}
+                        {% endfor %}
+                        </td>
+                        <td>
+                        {% for cap in cnd.CapacitacionesPrincipales.all %}
+                            <span>{{cap.Descripcion}}</span>
+                        {% endfor %}
+                        </td>
                         <td>{{cnd.Exp_Laboral}}</td>
                         <td>{{cnd.RecomendadoPor}}</td>
 

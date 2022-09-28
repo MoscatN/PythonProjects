@@ -4,30 +4,72 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class IdiomaForm(ModelForm):
     class Meta:
         model = Idioma
-        fields = '__all__'
+        fields = ['Idioma', 'Activo']
 
+    Idioma = forms.CharField()
+    Activo = forms.BooleanField()
+
+Nivel = (
+    ("1", 'Grado'),
+    ("2", 'Post-Grado'),
+    ("3", 'Maestria'),
+    ("4", 'Doctorado'),
+    ("5", 'Tecnico'),
+    ("6", 'Gestion')
+)
 class CapacitacionesForm(ModelForm):
     class Meta:
         model = Capacitaciones
-        fields = '__all__'
+        fields = ['Descripcion', 'Nivel', 'Fecha_Desde', 'Fecha_Hasta', 'Institucion']
+
+    Descripcion = forms.CharField()
+    Nivel = forms.ChoiceField(choices=Nivel, initial=0)
+    Fecha_Desde = forms.DateField(widget=DateInput)
+    Fecha_Hasta = forms.DateField(widget=DateInput)
+    Institucion = forms.CharField()
 
 class CompetenciaForm(ModelForm):
     class Meta:
         model = Competencia
-        fields = '__all__'
+        fields = ['Descripcion', 'Activo']
+
+    Descripcion = forms.CharField()
+    Activo = forms.BooleanField()
+
+
+
+Riesgos = (
+    ("1", 'Alto'),
+    ("2", 'Medio'),
+    ("3", 'Bajo')
+)
 
 class PuestoForm(ModelForm):
     class Meta:
         model = Puesto
-        fields = '__all__'
+        fields = ['Puesto', 'Riesgo', 'SalarioMinimo', 'SalarioMaximo', 'Activo']
+
+    Puesto = forms.CharField()
+    Riesgo = forms.ChoiceField(choices=Riesgos, initial=3)
+    SalarioMinimo = forms.IntegerField()
+    SalarioMaximo = forms.IntegerField()
 
 class ExpLabForm(ModelForm):
     class Meta:
         model = ExperienciaLaboral
-        fields = '__all__'
+        fields = ['Empresa', 'PuestoOcupado', 'Fecha_Desde', 'Fecha_Hasta', 'Salario']
+
+    Empresa = forms.CharField()
+    PuestoOcupado = forms.CharField()
+    Fecha_Desde = forms.DateField(widget=DateInput)
+    Fecha_Hasta = forms.DateField(widget=DateInput)
+    Salario = forms.IntegerField()
 
 class CandidatosForm(ModelForm):
     class Meta:
@@ -55,8 +97,15 @@ class CandidatosForm(ModelForm):
 class EmpleadosForm(ModelForm):
     class Meta:
         model = Empleados
-        fields = '__all__'
+        fields = ['Cedula', 'Nombre', 'Fecha_Ingreso', 'Departamento', 'SalarioMensual', 'Puesto', 'Activo']
 
+    Cedula = forms.CharField()
+    Nombre = forms.CharField()
+    Fecha_Ingreso = forms.DateField(widget=DateInput)
+    Departamento = forms.CharField()
+    SalarioMensual = forms.IntegerField()
+    Puesto = forms.ModelChoiceField(queryset=Puesto.objects.all(), initial=0)
+    Activo = forms.BooleanField()
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User

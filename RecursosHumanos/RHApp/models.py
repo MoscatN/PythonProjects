@@ -61,7 +61,7 @@ class Puesto(models.Model):
     MEDIO = 'Medio'
     BAJO = 'Bajo'
 
-    Riesgo = [
+    Riesgos = [
         (ALTO, 'Alto'),
         (MEDIO, 'Medio'),
         (BAJO, 'Bajo')
@@ -69,7 +69,7 @@ class Puesto(models.Model):
 
     Puesto = models.CharField(max_length=50)
 
-    Riesgo = models.CharField(max_length=20, choices=Riesgo)
+    Riesgo = models.CharField(max_length=20, choices=Riesgos)
 
     SalarioMinimo = models.IntegerField(null=True, validators=[MinValueValidator(0)])
 
