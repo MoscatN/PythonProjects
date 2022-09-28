@@ -15,21 +15,14 @@ class IdiomaForm(ModelForm):
     Idioma = forms.CharField()
     Activo = forms.BooleanField()
 
-Nivel = (
-    ("1", 'Grado'),
-    ("2", 'Post-Grado'),
-    ("3", 'Maestria'),
-    ("4", 'Doctorado'),
-    ("5", 'Tecnico'),
-    ("6", 'Gestion')
-)
+
 class CapacitacionesForm(ModelForm):
+
     class Meta:
         model = Capacitaciones
         fields = ['Descripcion', 'Nivel', 'Fecha_Desde', 'Fecha_Hasta', 'Institucion']
 
     Descripcion = forms.CharField()
-    Nivel = forms.ChoiceField(choices=Nivel, initial=0)
     Fecha_Desde = forms.DateField(widget=DateInput)
     Fecha_Hasta = forms.DateField(widget=DateInput)
     Institucion = forms.CharField()
@@ -42,21 +35,12 @@ class CompetenciaForm(ModelForm):
     Descripcion = forms.CharField()
     Activo = forms.BooleanField()
 
-
-
-Riesgos = (
-    ("1", 'Alto'),
-    ("2", 'Medio'),
-    ("3", 'Bajo')
-)
-
 class PuestoForm(ModelForm):
     class Meta:
         model = Puesto
         fields = ['Puesto', 'Riesgo', 'SalarioMinimo', 'SalarioMaximo', 'Activo']
 
     Puesto = forms.CharField()
-    Riesgo = forms.ChoiceField(choices=Riesgos, initial=3)
     SalarioMinimo = forms.IntegerField()
     SalarioMaximo = forms.IntegerField()
 

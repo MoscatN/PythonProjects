@@ -311,7 +311,7 @@ def deleteCapacitaciones(request, pk):
     capacitaciones = Capacitaciones.objects.get(id=pk)
     if request.method == "POST":
         capacitaciones.delete()
-        return redirect('/idiomas')
+        return redirect('/capacitaciones')
     context = {'item': capacitaciones}
     return render(request, 'deleteCapacitaciones.html', context)
 
