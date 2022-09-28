@@ -13,7 +13,7 @@ class IdiomaForm(ModelForm):
         fields = ['Idioma', 'Activo']
 
     Idioma = forms.CharField()
-    Activo = forms.BooleanField()
+    # Activo = forms.BooleanField()
 
 
 class CapacitacionesForm(ModelForm):
@@ -33,7 +33,7 @@ class CompetenciaForm(ModelForm):
         fields = ['Descripcion', 'Activo']
 
     Descripcion = forms.CharField(label='Descripción')
-    Activo = forms.BooleanField()
+    # Activo = forms.BooleanField()
 
 class PuestoForm(ModelForm):
     class Meta:
@@ -62,7 +62,7 @@ class CandidatosForm(ModelForm):
 
     Cedula = forms.CharField()
     Nombre = forms.CharField()
-    PuestoAspira = forms.ModelChoiceField(queryset=Puesto.objects.all(), initial=0)
+    PuestoAspira = forms.ModelChoiceField(queryset=Puesto.objects.all(), initial=0, label='Puesto Aspira')
     CompetenciasPrincipales = forms.ModelMultipleChoiceField(
         queryset=Competencia.objects.all(),
         widget=forms.CheckboxSelectMultiple
@@ -89,7 +89,7 @@ class EmpleadosForm(ModelForm):
     Departamento = forms.CharField()
     SalarioMensual = forms.IntegerField(label='Salario Mensual')
     Puesto = forms.ModelChoiceField(queryset=Puesto.objects.all(), initial=0)
-    Activo = forms.BooleanField()
+    # Activo = forms.BooleanField()
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User

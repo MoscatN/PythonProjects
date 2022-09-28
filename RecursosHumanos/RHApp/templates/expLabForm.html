@@ -7,8 +7,8 @@
       {% csrf_token %}
 
     <div class="row">
-        <div class="col-md-2">
-                          {{ form }}
+        <div class="col-md-1">
+                          {{ form.as_p }}
         </div>
     </div>
 

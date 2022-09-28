@@ -28,7 +28,7 @@ urlpatterns = [
     path('delete_capacitaciones/<str:pk>/', views.deleteCapacitaciones, name="delete_capacitaciones"),
 
     path('create_competencia/', views.createCompetencias, name="create_competencia"),
-    path('update_competencia/<str:pk>/', views.updateCapacitaciones, name="update_competencia"),
+    path('update_competencia/<str:pk>/', views.updateCompetencia, name="update_competencia"),
     path('delete_competencia/<str:pk>/', views.deleteCompetencia, name="delete_competencia"),
 
     path('create_explaboral/', views.createExpLaboral, name="create_explaboral"),

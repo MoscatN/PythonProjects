@@ -296,7 +296,7 @@ def updateCapacitaciones(request, pk):
 
     if request.method == 'POST':
         # print('Printing POST: ', request.POST)
-        form = CapacitacionesForm(request.POST, instance=capacitaciones())
+        form = CapacitacionesForm(request.POST, instance=capacitaciones)
         if form.is_valid():
             form.save()
             return redirect('/capacitaciones')
@@ -338,11 +338,11 @@ def createCompetencias(request):
 @RH_only
 def updateCompetencia(request, pk):
     competencia = Competencia.objects.get(id=pk)
-    form = CompetenciaForm(instance=capacitaciones)
+    form = CompetenciaForm(instance=competencia)
 
     if request.method == 'POST':
         # print('Printing POST: ', request.POST)
-        form = CompetenciaForm(request.POST, instance=competencia())
+        form = CompetenciaForm(request.POST, instance=competencia)
         if form.is_valid():
             form.save()
             return redirect('/competencia')
@@ -510,6 +510,7 @@ def updateEmpleados(request, pk):
     form = EmpleadosForm(instance=empleados)
 
     if request.method == 'POST':
+
         # print('Printing POST: ', request.POST)
         form = EmpleadosForm(request.POST, instance=empleados)
         if form.is_valid():
