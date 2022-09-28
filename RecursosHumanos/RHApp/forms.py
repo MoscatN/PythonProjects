@@ -3,7 +3,7 @@ from .models import *
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
-
+from django.utils.translation import gettext_lazy as _
 class DateInput(forms.DateInput):
     input_type = 'date'
 
@@ -22,17 +22,17 @@ class CapacitacionesForm(ModelForm):
         model = Capacitaciones
         fields = ['Descripcion', 'Nivel', 'Fecha_Desde', 'Fecha_Hasta', 'Institucion']
 
-    Descripcion = forms.CharField()
-    Fecha_Desde = forms.DateField(widget=DateInput)
-    Fecha_Hasta = forms.DateField(widget=DateInput)
-    Institucion = forms.CharField()
+    Descripcion = forms.CharField(label='Descripción')
+    Fecha_Desde = forms.DateField(widget=DateInput, label='Fecha Desde')
+    Fecha_Hasta = forms.DateField(widget=DateInput, label='Fecha Hasta')
+    Institucion = forms.CharField(label='Institución')
 
 class CompetenciaForm(ModelForm):
     class Meta:
         model = Competencia
         fields = ['Descripcion', 'Activo']
 
-    Descripcion = forms.CharField()
+    Descripcion = forms.CharField(label='Descripción')
     Activo = forms.BooleanField()
 
 class PuestoForm(ModelForm):
@@ -40,9 +40,9 @@ class PuestoForm(ModelForm):
         model = Puesto
         fields = ['Puesto', 'Riesgo', 'SalarioMinimo', 'SalarioMaximo', 'Activo']
 
-    Puesto = forms.CharField()
-    SalarioMinimo = forms.IntegerField()
-    SalarioMaximo = forms.IntegerField()
+    Puesto = forms.CharField(label='Puesto')
+    SalarioMinimo = forms.IntegerField(label='Salario Minimo')
+    SalarioMaximo = forms.IntegerField(label='Salario Maximo')
 
 class ExpLabForm(ModelForm):
     class Meta:
@@ -50,9 +50,9 @@ class ExpLabForm(ModelForm):
         fields = ['Empresa', 'PuestoOcupado', 'Fecha_Desde', 'Fecha_Hasta', 'Salario']
 
     Empresa = forms.CharField()
-    PuestoOcupado = forms.CharField()
-    Fecha_Desde = forms.DateField(widget=DateInput)
-    Fecha_Hasta = forms.DateField(widget=DateInput)
+    PuestoOcupado = forms.CharField(label='Puesto Ocupado')
+    Fecha_Desde = forms.DateField(widget=DateInput, label='Fecha Desde')
+    Fecha_Hasta = forms.DateField(widget=DateInput, label='Fecha Hasta')
     Salario = forms.IntegerField()
 
 class CandidatosForm(ModelForm):
@@ -85,9 +85,9 @@ class EmpleadosForm(ModelForm):
 
     Cedula = forms.CharField()
     Nombre = forms.CharField()
-    Fecha_Ingreso = forms.DateField(widget=DateInput)
+    Fecha_Ingreso = forms.DateField(widget=DateInput, label='Fecha de Ingreso')
     Departamento = forms.CharField()
-    SalarioMensual = forms.IntegerField()
+    SalarioMensual = forms.IntegerField(label='Salario Mensual')
     Puesto = forms.ModelChoiceField(queryset=Puesto.objects.all(), initial=0)
     Activo = forms.BooleanField()
 class CreateUserForm(UserCreationForm):

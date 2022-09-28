@@ -10,7 +10,7 @@ from django.utils import timezone
 class Idioma(models.Model):
     """RHApp manejados por el candidato"""
 
-    Idioma = models.CharField(max_length=200, unique=True)
+    Idioma = models.CharField(max_length=200, unique=True, verbose_name='Idioma')
     Activo = models.BooleanField()
 
     def __str__(self):
@@ -34,22 +34,23 @@ class Capacitaciones(models.Model):
        (GESTION, 'Gestion'),
      ]
 
-    Descripcion = models.CharField(max_length=200, blank=False)
+    Descripcion = models.CharField(max_length=200, blank=False, verbose_name='Descripción')
     Nivel = models.CharField(
         max_length=15,
         choices=Nivel,
-        default=GRADO)
-    Fecha_Desde = models.DateField(auto_now_add= False, null=True)
-    Fecha_Hasta = models.DateField(auto_now_add= False, null=True)
-    Institucion = models.CharField(max_length=55, null=True)
+        default=GRADO,
+        verbose_name='Nivel')
+    Fecha_Desde = models.DateField(auto_now_add= False, null=True, verbose_name='Fecha de Inicio')
+    Fecha_Hasta = models.DateField(auto_now_add= False, null=True, verbose_name='Fecha de Finalizacióm')
+    Institucion = models.CharField(max_length=55, null=True, verbose_name='Institución')
 
     def __str__(self):
         return self.Descripcion
 
 class Competencia(models.Model):
     """Competencias del Candidato"""
-    Descripcion = models.CharField(max_length=200, unique=True)
-    Activo = models.BooleanField()
+    Descripcion = models.CharField(max_length=200, unique=True, verbose_name='Descripción')
+    Activo = models.BooleanField(verbose_name='Estado')
 
     def __str__(self):
         """Retorna una cadena en representacion del modelo"""
@@ -67,15 +68,15 @@ class Puesto(models.Model):
         (BAJO, 'Bajo')
     ]
 
-    Puesto = models.CharField(max_length=50)
+    Puesto = models.CharField(max_length=50, verbose_name='Puesto')
 
-    Riesgo = models.CharField(max_length=20, choices=Riesgos)
+    Riesgo = models.CharField(max_length=20, choices=Riesgos, verbose_name='Riesgo del Puesto')
 
-    SalarioMinimo = models.IntegerField(null=True, validators=[MinValueValidator(0)])
+    SalarioMinimo = models.IntegerField(null=True, validators=[MinValueValidator(0)], verbose_name='Salario Minimo')
 
-    SalarioMaximo = models.IntegerField(null=True, validators=[MinValueValidator(0)])
+    SalarioMaximo = models.IntegerField(null=True, validators=[MinValueValidator(0)], verbose_name='Salario Maximo')
 
-    Activo = models.BooleanField()
+    Activo = models.BooleanField(verbose_name='Estado')
 
     def __str__(self):
         return self.Puesto
@@ -88,15 +89,15 @@ class Puesto(models.Model):
 
 class ExperienciaLaboral(models.Model):
 
-    Empresa = models.CharField(max_length=35)
+    Empresa = models.CharField(max_length=35, verbose_name='Empresa')
 
-    PuestoOcupado = models.CharField(max_length=45)
+    PuestoOcupado = models.CharField(max_length=45, verbose_name='Puesto Ocupado')
 
-    Fecha_Desde = models.DateField(auto_now_add=False, null=True )
+    Fecha_Desde = models.DateField(auto_now_add=False, null=True,verbose_name='Fecha de Inicio')
 
-    Fecha_Hasta = models.DateField(auto_now_add=False, null=True)
+    Fecha_Hasta = models.DateField(auto_now_add=False, null=True, verbose_name='Fecha de Finalización')
 
-    Salario = models.IntegerField(validators=[MinValueValidator(0)])
+    Salario = models.IntegerField(validators=[MinValueValidator(0)], verbose_name='Salario')
 
     createdBy = models.ForeignKey(User, on_delete=models.CASCADE, null=True, editable=False)
 
@@ -122,21 +123,23 @@ class ExperienciaLaboral(models.Model):
 
 class Candidatos(models.Model):
     """"""
-    Cedula = models.CharField(max_length=13)
-    Nombre = models.CharField(max_length=25)
+    Cedula = models.CharField(max_length=13, verbose_name='Cedula')
+    Nombre = models.CharField(max_length=25, verbose_name='Nombre')
     PuestoAspira = models.ForeignKey(
         Puesto,
         on_delete=models.CASCADE,
+        verbose_name='Puesto Aspirado'
         )
-    Departamento = models.CharField(max_length=50)
-    SalarioAspirado = models.IntegerField(validators=[MinValueValidator(0)])
-    CompetenciasPrincipales = models.ManyToManyField(Competencia)
-    CapacitacionesPrincipales = models.ManyToManyField(Capacitaciones)
+    Departamento = models.CharField(max_length=50, verbose_name='Departamento')
+    SalarioAspirado = models.IntegerField(validators=[MinValueValidator(0)], verbose_name='Salario Aspirado')
+    CompetenciasPrincipales = models.ManyToManyField(Competencia, verbose_name='Competencias Principales')
+    CapacitacionesPrincipales = models.ManyToManyField(Capacitaciones, verbose_name='Capacitaciones Principales')
     Exp_Laboral = models.ForeignKey(
         ExperienciaLaboral,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name='Experiencia Laboral'
     )
-    RecomendadoPor = models.CharField(max_length=50)
+    RecomendadoPor = models.CharField(max_length=50, verbose_name='Recomendado Por')
 
     createdBy = models.ForeignKey(User, on_delete=models.CASCADE, null=True, editable=False)
     def __str__(self):
@@ -157,22 +160,23 @@ class Candidatos(models.Model):
 
 class Empleados(models.Model):
 
-    Cedula = models.CharField(max_length=13, unique=True)
+    Cedula = models.CharField(max_length=13, unique=True, verbose_name='Cedula')
 
-    Nombre = models.CharField(max_length=25)
+    Nombre = models.CharField(max_length=25, verbose_name='Nombre')
 
-    Fecha_Ingreso = models.DateField(auto_now_add=False, null=True)
+    Fecha_Ingreso = models.DateField(auto_now_add=False, null=True, verbose_name='Fecha de Ingreso')
 
-    Departamento = models.CharField(max_length=30)
+    Departamento = models.CharField(max_length=30, verbose_name='Departamento')
 
-    SalarioMensual = models.IntegerField(validators=[MinValueValidator(0, message="El salario debe ser mayor que cero")], null=True)
+    SalarioMensual = models.IntegerField(validators=[MinValueValidator(0, message="El salario debe ser mayor que cero")], null=True, verbose_name='Salario Mensual')
 
     Puesto = models.ForeignKey(
         Puesto,
-        on_delete= models.CASCADE
+        on_delete= models.CASCADE,
+        verbose_name='Puesto'
     )
 
-    Activo = models.BooleanField()
+    Activo = models.BooleanField(verbose_name='Estado')
 
     def __str__(self):
         return self.Nombre
