@@ -6,7 +6,7 @@
 
 <form action="{% url 'delete_empleados' item.id %}" method="POST">
   {% csrf_token %}
-  <a href="/idiomas" class="btn btn-info">Cancel</a>
+  <a href="/empleados" class="btn btn-info">Cancel</a>
 
   <input type="submit" name="Delete" placeholder="Delete" class="btn btn-danger">
 </form>
