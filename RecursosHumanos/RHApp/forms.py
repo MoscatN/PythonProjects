@@ -21,10 +21,14 @@ class CapacitacionesForm(ModelForm):
     class Meta:
         model = Capacitaciones
         fields = ['Descripcion', 'Nivel', 'Fecha_Desde', 'Fecha_Hasta', 'Institucion']
+        widgets = {
+            'Fecha_Desde': forms.DateInput(attrs={'type': 'date'}),
+            'Fecha_Hasta': forms.DateInput(attrs={'type': 'date'}),
+        }
 
     Descripcion = forms.CharField(label='Descripción')
-    Fecha_Desde = forms.DateField(widget=DateInput, label='Fecha Desde')
-    Fecha_Hasta = forms.DateField(widget=DateInput, label='Fecha Hasta')
+    # Fecha_Desde = forms.DateField(widget=DateInput, label='Fecha Desde')
+    # Fecha_Hasta = forms.DateField(widget=DateInput, label='Fecha Hasta')
     Institucion = forms.CharField(label='Institución')
 
 class CompetenciaForm(ModelForm):
@@ -41,38 +45,44 @@ class PuestoForm(ModelForm):
         fields = ['Puesto', 'Riesgo', 'SalarioMinimo', 'SalarioMaximo', 'Activo']
 
     Puesto = forms.CharField(label='Puesto')
-    SalarioMinimo = forms.IntegerField(label='Salario Minimo')
-    SalarioMaximo = forms.IntegerField(label='Salario Maximo')
+    # SalarioMinimo = forms.IntegerField(label='Salario Minimo')
+    # SalarioMaximo = forms.IntegerField(label='Salario Maximo')
 
 class ExpLabForm(ModelForm):
     class Meta:
         model = ExperienciaLaboral
-        fields = ['Empresa', 'PuestoOcupado', 'Fecha_Desde', 'Fecha_Hasta', 'Salario']
+        fields = ['Empresa', 'PuestoOcupado','Fecha_Desde' ,'Fecha_Hasta', 'Salario']
+        widgets = {
+            'Fecha_Desde': forms.DateInput(attrs={'type': 'date'}),
+            'Fecha_Hasta': forms.DateInput(attrs={'type': 'date'}),
+        }
 
     Empresa = forms.CharField()
     PuestoOcupado = forms.CharField(label='Puesto Ocupado')
-    Fecha_Desde = forms.DateField(widget=DateInput, label='Fecha Desde')
-    Fecha_Hasta = forms.DateField(widget=DateInput, label='Fecha Hasta')
-    Salario = forms.IntegerField()
+    # Fecha_Desde = forms.DateField(widget=DateInput, label='Fecha Desde')
+    # Fecha_Hasta = forms.DateField(widget=DateInput, label='Fecha Hasta')
+    Salario = forms.IntegerField(min_value=0)
 
 class CandidatosForm(ModelForm):
     class Meta:
         model = Candidatos
         fields = ['Cedula', 'Nombre', 'PuestoAspira', 'Departamento', 'SalarioAspirado', 'CompetenciasPrincipales', 'CapacitacionesPrincipales', 'Exp_Laboral', 'RecomendadoPor']
 
-    Cedula = forms.CharField()
+    Cedula = forms.CharField(max_length=13)
     Nombre = forms.CharField()
     PuestoAspira = forms.ModelChoiceField(queryset=Puesto.objects.all(), initial=0, label='Puesto Aspira')
     CompetenciasPrincipales = forms.ModelMultipleChoiceField(
         queryset=Competencia.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.CheckboxSelectMultiple,
+        label='Competencias Principales'
     )
     CapacitacionesPrincipales = forms.ModelMultipleChoiceField(
         queryset=Capacitaciones.objects.all(),
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.CheckboxSelectMultiple,
+        label='Capacitaciones Principales'
     )
     Exp_Laboral = models.ForeignKey(ExperienciaLaboral, on_delete=models.CASCADE)
-    RecomendadoPor = models.CharField
+    RecomendadoPor = models.CharField()
 
     def __int__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -82,14 +92,15 @@ class EmpleadosForm(ModelForm):
     class Meta:
         model = Empleados
         fields = ['Cedula', 'Nombre', 'Fecha_Ingreso', 'Departamento', 'SalarioMensual', 'Puesto', 'Activo']
+        widgets = {
+            'Fecha_Ingreso': forms.DateInput(attrs={'type': 'date'}),
+        }
 
-    Cedula = forms.CharField()
+    Cedula = forms.CharField(max_length=13)
     Nombre = forms.CharField()
-    Fecha_Ingreso = forms.DateField(widget=DateInput, label='Fecha de Ingreso')
     Departamento = forms.CharField()
-    SalarioMensual = forms.IntegerField(label='Salario Mensual')
     Puesto = forms.ModelChoiceField(queryset=Puesto.objects.all(), initial=0)
-    # Activo = forms.BooleanField()
+
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User

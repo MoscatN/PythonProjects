@@ -21,8 +21,16 @@
                         <ul>
                             <li>{{cnd.Cedula}}</li>
                             <li>{{ cnd.PuestoAspira }} </li>
-                            <li>{{ cnd.CompetenciasPrincipales }}</li>
-                            <li>{{ cnd.CapacitacionesPrincipales}}</li>
+                            <li>
+                                {% for comp in cnd.CompetenciasPrincipales.all %}
+                                   {{comp.Descripcion}},
+                                {% endfor %}
+                            </li>
+                            <li>
+                                {% for cap in cnd.CapacitacionesPrincipales.all %}
+                                    <span>{{cap.Descripcion}},</span>
+                                {% endfor %}
+                            </li>
                             <li>{{ cnd.Exp_Laboral }}</li>
                             <li>Recomendado por {{ cnd.RecomendadoPor}}</li>
                         </ul>

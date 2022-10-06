@@ -47,6 +47,21 @@ class Capacitaciones(models.Model):
     def __str__(self):
         return self.Descripcion
 
+    def clean(self, *args, **kwargs):
+        # run the base validation
+        super(Capacitaciones, self).clean(*args, **kwargs)
+
+        if self.Fecha_Desde > datetime.date.today():
+            raise ValidationError(
+                {'Fecha_Desde': 'La ingresada no puede ser mas reciente que el dia de hoy.'})
+
+        if self.Fecha_Hasta > datetime.date.today():
+            raise ValidationError(
+                {'Fecha_Hasta': 'La fecha ingresada no es correcta.'})
+        if self.Fecha_Hasta < self.Fecha_Desde:
+            raise ValidationError(
+                {'Fecha_Hasta': 'La fecha ingresada no puede ser menor a la inicial.'})
+
 class Competencia(models.Model):
     """Competencias del Candidato"""
     Descripcion = models.CharField(max_length=200, unique=True, verbose_name='Descripción')
@@ -72,9 +87,9 @@ class Puesto(models.Model):
 
     Riesgo = models.CharField(max_length=20, choices=Riesgos, verbose_name='Riesgo del Puesto')
 
-    SalarioMinimo = models.IntegerField(null=True, validators=[MinValueValidator(0)], verbose_name='Salario Minimo')
+    SalarioMinimo = models.IntegerField(null=True, validators=[MinValueValidator(0)], verbose_name='Salario Minimo RD$')
 
-    SalarioMaximo = models.IntegerField(null=True, validators=[MinValueValidator(0)], verbose_name='Salario Maximo')
+    SalarioMaximo = models.IntegerField(null=True, validators=[MinValueValidator(0)], verbose_name='Salario Maximo RD$')
 
     Activo = models.BooleanField(verbose_name='Estado')
 
@@ -93,7 +108,7 @@ class ExperienciaLaboral(models.Model):
 
     PuestoOcupado = models.CharField(max_length=45, verbose_name='Puesto Ocupado')
 
-    Fecha_Desde = models.DateField(auto_now_add=False, null=True,verbose_name='Fecha de Inicio')
+    Fecha_Desde = models.DateField(auto_now_add=False, null=True, verbose_name='Fecha de Inicio')
 
     Fecha_Hasta = models.DateField(auto_now_add=False, null=True, verbose_name='Fecha de Finalización')
 
@@ -106,7 +121,7 @@ class ExperienciaLaboral(models.Model):
 
     #Validacion que no permite fechas mas recientes que la fecha de hoy
     def clean(self, *args, **kwargs):
-        # run the base validation
+        #Validando que las fechas sean correctas
         super(ExperienciaLaboral, self).clean(*args, **kwargs)
 
         if self.Fecha_Desde > datetime.date.today():
@@ -115,7 +130,7 @@ class ExperienciaLaboral(models.Model):
 
         if self.Fecha_Hasta > datetime.date.today():
             raise ValidationError(
-                {'Fecha_Hasta': 'La fecha ingresada no es correcta.'})
+                {'Fecha_Hasta': 'La fecha final no puede ser en el futuro.'})
         if self.Fecha_Hasta < self.Fecha_Desde:
             raise ValidationError(
                 {'Fecha_Hasta': 'La fecha ingresada no puede ser menor a la inicial.'})
@@ -151,13 +166,6 @@ class Candidatos(models.Model):
                 {'Cedula': "La cedula ingresada es incorrecta"}
             )
 
-    # def ToArchive(self):
-    #     from django.db import connection, transaction
-    #     cursor = connection.cursor()
-    #     cursor.execute("Insert Into Empleados")
-    #     transaction.commit_unless_managed()
-    #     self.delete()
-
 class Empleados(models.Model):
 
     Cedula = models.CharField(max_length=13, unique=True, verbose_name='Cedula')
@@ -181,8 +189,14 @@ class Empleados(models.Model):
     def __str__(self):
         return self.Nombre
 
+    #Verificando si la cedula ingresada es correcta
     def clean(self):
         if validarCedula(self.Cedula) == False:
             raise ValidationError(
                 {'Cedula': "La cedula ingresada es incorrecta"}
             )
+
+        if self.Fecha_Ingreso > datetime.date.today():
+            raise ValidationError(
+                {'Fecha_Desde': 'La ingresada no puede ser mas reciente que el dia de hoy.'})
+
